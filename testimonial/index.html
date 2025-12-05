@@ -209,6 +209,164 @@
         </div>
     </section>
 
+    <!-- Feedback Section -->
+    <section class="feedback-section">
+        <div class="feedback-container">
+            <div class="feedback-header">
+                <h2 class="feedback-title">Share Your Experience</h2>
+                <p class="feedback-subtitle">Your feedback helps me improve and deliver better results</p>
+            </div>
+            
+            <div class="feedback-form-container">
+                <form class="feedback-form" id="feedbackForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="name">Your Name *</label>
+                            <input type="text" id="name" name="name" required placeholder="John Doe">
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email Address *</label>
+                            <input type="email" id="email" name="email" required placeholder="john@example.com">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="company">Company/Role</label>
+                        <input type="text" id="company" name="company" placeholder="CEO at Tech Corp">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="rating">Rate Your Experience *</label>
+                        <div class="star-rating-input" id="starRating">
+                            <span class="star" data-rating="1">★</span>
+                            <span class="star" data-rating="2">★</span>
+                            <span class="star" data-rating="3">★</span>
+                            <span class="star" data-rating="4">★</span>
+                            <span class="star" data-rating="5">★</span>
+                        </div>
+                        <input type="hidden" id="ratingValue" name="rating" value="0" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="testimonial">Your Testimonial *</label>
+                        <textarea id="testimonial" name="testimonial" rows="4" required placeholder="Share your experience working with me..."></textarea>
+                    </div>
+                    
+                    <div class="form-group checkbox-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="permission" name="permission" required>
+                            <span class="checkmark"></span>
+                            I grant permission to display this testimonial on the portfolio
+                        </label>
+                    </div>
+                    
+                    <button type="submit" class="submit-btn">
+                        <span>Submit Testimonial</span>
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </form>
+                
+                <div class="success-message" id="successMessage">
+                    <i class="fas fa-check-circle"></i>
+                    <h3>Thank you for your feedback!</h3>
+                    <p>Your testimonial has been submitted successfully.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Enhanced Footer -->
+    <footer class="enhanced-footer">
+        <div class="footer-wave"></div>
+        <div class="footer-content">
+            <div class="footer-main">
+                <div class="footer-brand">
+                    <div class="brand-logo">
+                        <span class="logo-text">VW</span>
+                    </div>
+                    <h3>Vedant Wagh</h3>
+                    <p>Creating exceptional digital experiences with passion and precision.</p>
+                    <div class="social-links">
+                        <a href="#" class="social-link" title="GitHub">
+                            <i class="fab fa-github"></i>
+                        </a>
+                        <a href="#" class="social-link" title="LinkedIn">
+                            <i class="fab fa-linkedin"></i>
+                        </a>
+                        <a href="#" class="social-link" title="Twitter">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="social-link" title="Instagram">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="social-link" title="Dribbble">
+                            <i class="fab fa-dribbble"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="footer-sections">
+                    <div class="footer-section">
+                        <h4>Quick Links</h4>
+                        <nav class="footer-nav">
+                            <a href="../index.html" class="footer-link">Home</a>
+                            <a href="../about/index.html" class="footer-link">About</a>
+                            <a href="../service/index.html" class="footer-link">Services</a>
+                            <a href="../project/index.html" class="footer-link">Projects</a>
+                            <a href="./index.html" class="footer-link active">Testimonials</a>
+                            <a href="../contact/index.html" class="footer-link">Contact</a>
+                        </nav>
+                    </div>
+                    
+                    <div class="footer-section">
+                        <h4>Services</h4>
+                        <nav class="footer-nav">
+                            <a href="#" class="footer-link">Web Design</a>
+                            <a href="#" class="footer-link">Web Development</a>
+                            <a href="#" class="footer-link">UI/UX Design</a>
+                            <a href="#" class="footer-link">Performance Optimization</a>
+                            <a href="#" class="footer-link">Responsive Design</a>
+                        </nav>
+                    </div>
+                    
+                    <div class="footer-section">
+                        <h4>Contact Info</h4>
+                        <div class="contact-info">
+                            <div class="contact-item">
+                                <i class="fas fa-envelope"></i>
+                                <span>vedant@example.com</span>
+                            </div>
+                            <div class="contact-item">
+                                <i class="fas fa-phone"></i>
+                                <span>+91 98765 43210</span>
+                            </div>
+                            <div class="contact-item">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>Mumbai, India</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <div class="footer-bottom-content">
+                    <p class="copyright">&copy; 2025 Vedant Wagh. All rights reserved.</p>
+                    <div class="footer-bottom-links">
+                        <a href="#" class="footer-bottom-link">Privacy Policy</a>
+                        <a href="#" class="footer-bottom-link">Terms of Service</a>
+                        <a href="#" class="footer-bottom-link">Cookie Policy</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Back to Top Button -->
+    <button class="back-to-top" id="backToTop">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
     <script src="script.js"></script>
 </body>
 </html>
