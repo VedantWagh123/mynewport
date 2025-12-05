@@ -1,6 +1,97 @@
 // ============================================================
-// PROJECTS PAGE - COMPLETE JAVASCRIPT FUNCTIONALITY
+// MOBILE NAVIGATION FUNCTIONALITY
 // ============================================================
+function initMobileNavigation() {
+    const hamburgerBtn = document.getElementById('hamburgerBtn');
+    const mobileNav = document.getElementById('mobileNav');
+    const navOverlay = document.getElementById('navOverlay');
+    const navLinks = document.querySelectorAll('.nav-link');
+    const navHeader = document.querySelector('.nav-header');
+
+    if (!hamburgerBtn || !mobileNav || !navOverlay) return;
+
+    let lastScrollTop = 0;
+    let scrollThreshold = 100;
+    let isScrolling = false;
+
+    function handleScroll() {
+        if (!isScrolling) {
+            window.requestAnimationFrame(() => {
+                const currentScrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                
+                if (currentScrollTop > scrollThreshold) {
+                    if (currentScrollTop > lastScrollTop) {
+                        navHeader.classList.add('hidden');
+                        navHeader.classList.remove('visible');
+                    } else {
+                        navHeader.classList.add('visible');
+                        navHeader.classList.remove('hidden');
+                    }
+                } else {
+                    navHeader.classList.add('visible');
+                    navHeader.classList.remove('hidden');
+                }
+                
+                lastScrollTop = currentScrollTop <= 0 ? 0 : currentScrollTop;
+                isScrolling = false;
+            });
+            isScrolling = true;
+        }
+    }
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+
+    function toggleMobileMenu() {
+        const isOpen = mobileNav.classList.contains('active');
+        
+        if (isOpen) {
+            mobileNav.classList.remove('active');
+            navOverlay.classList.remove('active');
+            hamburgerBtn.classList.remove('active');
+            document.body.style.overflow = '';
+        } else {
+            mobileNav.classList.add('active');
+            navOverlay.classList.add('active');
+            hamburgerBtn.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+    }
+
+    hamburgerBtn.addEventListener('click', toggleMobileMenu);
+    navOverlay.addEventListener('click', toggleMobileMenu);
+
+    navLinks.forEach(link => {
+        link.addEventListener('click', () => {
+            mobileNav.classList.remove('active');
+            navOverlay.classList.remove('active');
+            hamburgerBtn.classList.remove('active');
+            document.body.style.overflow = '';
+        });
+    });
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && mobileNav.classList.contains('active')) {
+            toggleMobileMenu();
+        }
+    });
+
+    let resizeTimer;
+    window.addEventListener('resize', () => {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(() => {
+            if (window.innerWidth > 768 && mobileNav.classList.contains('active')) {
+                toggleMobileMenu();
+            }
+        }, 250);
+    });
+
+    handleScroll();
+}
+
+// Initialize mobile navigation
+document.addEventListener('DOMContentLoaded', function() {
+    initMobileNavigation();
+});
 // This file contains all interactive functionality for the projects showcase section including:
 // - Custom cursor with smooth animations and click effects
 // - Project filtering and grid management

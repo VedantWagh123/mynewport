@@ -13,10 +13,46 @@
     <!-- Particle Canvas -->
     <canvas id="particle-canvas"></canvas>
     
-    <!-- Home Button -->
-    <a href="../index.html" class="home-btn" title="Go to Home">
-      <i class="fas fa-home"></i>
-    </a>
+    <!-- Navigation Header -->
+    <header class="nav-header">
+        <!-- Hamburger Menu -->
+        <button class="hamburger-btn" id="hamburgerBtn" title="Menu">
+            <i class="fas fa-bars"></i>
+        </button>
+    </header>
+
+    <!-- Mobile Navigation Menu -->
+    <nav class="mobile-nav" id="mobileNav">
+        <div class="nav-content">
+            <a href="../index.html" class="nav-link">
+                <i class="fas fa-home"></i>
+                <span>Home</span>
+            </a>
+            <a href="../about/index.html" class="nav-link">
+                <i class="fas fa-user"></i>
+                <span>About</span>
+            </a>
+            <a href="../project/index.html" class="nav-link">
+                <i class="fas fa-project-diagram"></i>
+                <span>Projects</span>
+            </a>
+            <a href="../service/index.html" class="nav-link">
+                <i class="fas fa-cogs"></i>
+                <span>Services</span>
+            </a>
+            <a href="./index.html" class="nav-link active">
+                <i class="fas fa-quote-left"></i>
+                <span>Testimonials</span>
+            </a>
+            <a href="../contact/index.html" class="nav-link">
+                <i class="fas fa-envelope"></i>
+                <span>Contact</span>
+            </a>
+        </div>
+    </nav>
+
+    <!-- Navigation Overlay -->
+    <div class="nav-overlay" id="navOverlay"></div>
 
     <section class="testimonial-section">
         <div class="section-header">

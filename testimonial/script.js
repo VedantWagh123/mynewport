@@ -800,7 +800,111 @@ function resetStarRating() {
 document.addEventListener('DOMContentLoaded', function() {
     enhanceTestimonialScrolling();
     initParticleAnimation();
+    initMobileNavigation();
 });
+
+// ============================================================
+// MOBILE NAVIGATION FUNCTIONALITY
+// ============================================================
+function initMobileNavigation() {
+    const hamburgerBtn = document.getElementById('hamburgerBtn');
+    const mobileNav = document.getElementById('mobileNav');
+    const navOverlay = document.getElementById('navOverlay');
+    const navLinks = document.querySelectorAll('.nav-link');
+    const navHeader = document.querySelector('.nav-header');
+
+    if (!hamburgerBtn || !mobileNav || !navOverlay) return;
+
+    // Scroll-based hide/show functionality
+    let lastScrollTop = 0;
+    let scrollThreshold = 100; // Hide after scrolling 100px down
+    let isScrolling = false;
+
+    function handleScroll() {
+        if (!isScrolling) {
+            window.requestAnimationFrame(() => {
+                const currentScrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                
+                if (currentScrollTop > scrollThreshold) {
+                    if (currentScrollTop > lastScrollTop) {
+                        // Scrolling down - hide navigation
+                        navHeader.classList.add('hidden');
+                        navHeader.classList.remove('visible');
+                    } else {
+                        // Scrolling up - show navigation
+                        navHeader.classList.add('visible');
+                        navHeader.classList.remove('hidden');
+                    }
+                } else {
+                    // At top - always show navigation
+                    navHeader.classList.add('visible');
+                    navHeader.classList.remove('hidden');
+                }
+                
+                lastScrollTop = currentScrollTop <= 0 ? 0 : currentScrollTop;
+                isScrolling = false;
+            });
+            isScrolling = true;
+        }
+    }
+
+    // Add scroll event listener
+    window.addEventListener('scroll', handleScroll, { passive: true });
+
+    // Toggle mobile menu
+    function toggleMobileMenu() {
+        const isOpen = mobileNav.classList.contains('active');
+        
+        if (isOpen) {
+            // Close menu
+            mobileNav.classList.remove('active');
+            navOverlay.classList.remove('active');
+            hamburgerBtn.classList.remove('active');
+            document.body.style.overflow = ''; // Restore scrolling
+        } else {
+            // Open menu
+            mobileNav.classList.add('active');
+            navOverlay.classList.add('active');
+            hamburgerBtn.classList.add('active');
+            document.body.style.overflow = 'hidden'; // Prevent scrolling
+        }
+    }
+
+    // Event listeners
+    hamburgerBtn.addEventListener('click', toggleMobileMenu);
+    navOverlay.addEventListener('click', toggleMobileMenu);
+
+    // Close menu when clicking on nav links
+    navLinks.forEach(link => {
+        link.addEventListener('click', () => {
+            mobileNav.classList.remove('active');
+            navOverlay.classList.remove('active');
+            hamburgerBtn.classList.remove('active');
+            document.body.style.overflow = ''; // Restore scrolling
+        });
+    });
+
+    // Close menu on Escape key
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && mobileNav.classList.contains('active')) {
+            toggleMobileMenu();
+        }
+    });
+
+    // Close menu on window resize (if screen becomes larger)
+    let resizeTimer;
+    window.addEventListener('resize', () => {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(() => {
+            if (window.innerWidth > 768 && mobileNav.classList.contains('active')) {
+                toggleMobileMenu();
+            }
+        }, 250);
+    });
+
+    // Initialize navigation state
+    handleScroll();
+}
 
 // ============================================================
 // PARTICLE ANIMATION SYSTEM
