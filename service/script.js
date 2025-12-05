@@ -1,140 +1,175 @@
-const projectShowcase = [
-  {
-    title: "Project Nova",
-    tag: "Analytics",
-    description: "AI-driven analytics cockpit layering predictive insights with realtime trend scanning for product teams.",
-    image: "https://images.unsplash.com/photo-1523475472560-d2df97ec485c?auto=format&fit=crop&w=1200&q=80",
-    icon: "fa-solid fa-meteor",
-  },
-  {
-    title: "Synapse Pulse",
-    tag: "SaaS UI",
-    description: "Cross-device operations suite streamlining launch readiness, sprint health, and stakeholder updates in one view.",
-    image: "https://images.unsplash.com/photo-1557838923-2985c318be48?auto=format&fit=crop&w=1200&q=80",
-    icon: "fa-solid fa-bolt",
-  },
-  {
-    title: "Aurora Studio",
-    tag: "Storytelling",
-    description: "Immersive brand microsite blending motion-led storytelling, parallax depth, and generative color waves.",
-    image: "https://images.unsplash.com/photo-1545239351-1141bd82e8a6?auto=format&fit=crop&w=1200&q=80",
-    icon: "fa-solid fa-moon",
-  },
-  {
-    title: "CircuitX",
-    tag: "Design System",
-    description: "Hackathon-ready component library offering instant previews, live token editing, and theme presets.",
-    image: "https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?auto=format&fit=crop&w=1200&q=80",
-    icon: "fa-solid fa-cubes-stacked",
-  },
-  {
-    title: "Flux Horizon",
-    tag: "VR Experience",
-    description: "Cinematic VR landing page that teases spatial soundscapes, guided missions, and reactive lighting cues.",
-    image: "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1200&q=80",
-    icon: "fa-solid fa-vr-cardboard",
-  },
-  {
-    title: "Quantum Forge",
-    tag: "Research",
-    description: "Interactive report visualising quantum computing roadmaps with layered insights and annotated milestones.",
-    image: "https://images.unsplash.com/photo-1555949963-aa79dcee981c?auto=format&fit=crop&w=1200&q=80",
-    icon: "fa-solid fa-atom",
-  },
-  {
-    title: "Neon Nexus",
-    tag: "Event Hub",
-    description: "High-energy hackathon portal with live leaderboards, team dashboards, and dynamic sponsor showcases.",
-    image: "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=80",
-    icon: "fa-solid fa-satellite-dish",
-  },
-  {
-    title: "HoloWave",
-    tag: "Product Launch",
-    description: "Launch splash for a holographic audio device featuring volumetric renders, sound-reactive gradients, and CTA flows.",
-    image: "https://images.unsplash.com/photo-1527443154391-507e9dc6c5cc?auto=format&fit=crop&w=1200&q=80",
-    icon: "fa-solid fa-wave-square",
-  },
-  {
-    title: "Atlas Sync",
-    tag: "Collaboration",
-    description: "Realtime collaboration hub with adaptive timelines, meeting intelligence, and broadcast-ready status pulses.",
-    image: "https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?auto=format&fit=crop&w=1200&q=80",
-    icon: "fa-solid fa-layer-group",
-  },
-];
+﻿// Optimized Service Section JavaScript - Performance Focused
+// ============================================================
 
-function createProjectCard(project, index) {
-  const article = document.createElement("article");
-  article.className = "project-card";
-  article.setAttribute("data-tilt", "");
-  article.setAttribute("data-aos", "zoom-in-up");
-  article.setAttribute("data-aos-delay", `${200 + index * 80}`);
-
-  const altText = `${project.title} showcase visual`;
-
-  article.innerHTML = `
-    <img src="${project.image}" alt="${altText}" loading="lazy" />
-    <div class="project-overlay">
-      <div class="overlay-content">
-        <span class="project-tag">
-          <i class="fa-solid fa-circle" aria-hidden="true"></i>
-          ${project.tag}
-        </span>
-        <i class="${project.icon} overlay-icon" aria-hidden="true"></i>
-        <h3 class="project-title">${project.title}</h3>
-        <p class="project-description">${project.description}</p>
-      </div>
-    </div>
-  `;
-
-  return article;
+// Debounce utility for performance
+function debounce(func, delay) {
+  let timeoutId;
+  return function(...args) {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => func(...args), delay);
+  };
 }
 
-function populateProjectGrid() {
-  const grid = document.querySelector(".projects-grid");
-  if (!grid) return;
+// 1. COUNTER ANIMATION - Scroll triggered
+function animateCounters() {
+  const counters = document.querySelectorAll('.counter-value');
+  
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting && !entry.target.classList.contains('counted')) {
+        entry.target.classList.add('counted');
+        const target = parseInt(entry.target.getAttribute('data-target'));
+        animateCounter(entry.target, target);
+      }
+    });
+  }, { threshold: 0.5 });
 
-  projectShowcase.forEach((project, index) => {
-    const card = createProjectCard(project, index);
-    grid.appendChild(card);
+  counters.forEach(counter => observer.observe(counter));
+}
+
+function animateCounter(element, target) {
+  const duration = 1500;
+  const start = 0;
+  const increment = target / (duration / 16);
+  let current = start;
+
+  const timer = setInterval(() => {
+    current += increment;
+    if (current >= target) {
+      element.textContent = target;
+      clearInterval(timer);
+    } else {
+      element.textContent = Math.floor(current);
+    }
+  }, 16);
+}
+
+// 2. SMOOTH SCROLL ANIMATIONS
+function setupScrollAnimations() {
+  const animatedElements = document.querySelectorAll('.fade-in-section');
+  
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.style.opacity = '1';
+        entry.target.style.transform = 'translateY(0)';
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  animatedElements.forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(20px)';
+    el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+    observer.observe(el);
+  });
+}
+
+// 3. CARD HOVER EFFECTS - Lightweight
+const serviceCards = document.querySelectorAll('.service-card');
+
+serviceCards.forEach(card => {
+  card.addEventListener('mouseenter', () => {
+    card.style.willChange = 'transform';
   });
 
-  if (typeof initTiltCards === "function") {
-    initTiltCards();
-  }
-
-  if (window.AOS) {
-    if (typeof window.AOS.refreshHard === "function") {
-      window.AOS.refreshHard();
-    } else if (typeof window.AOS.refresh === "function") {
-      window.AOS.refresh();
-    }
-  }
-}
-
-document.addEventListener("DOMContentLoaded", () => {
-    populateProjectGrid();
-
-    const featuredCards = document.querySelectorAll('.featured-project-card');
-
-    featuredCards.forEach(card => {
-        card.addEventListener('mousemove', (e) => {
-            const rect = card.getBoundingClientRect();
-            const x = e.clientX - rect.left - rect.width / 2;
-            const y = e.clientY - rect.top - rect.height / 2;
-
-            const rotateX = (y / rect.height) * -8; // Adjust multiplier for sensitivity
-            const rotateY = (x / rect.width) * 8;   // Adjust multiplier for sensitivity
-
-            card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-5px)`;
-            card.style.transition = 'transform 0.1s linear'; // Smooth transition for mouse move
-        });
-
-        card.addEventListener('mouseleave', () => {
-            card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) translateY(0)';
-            card.style.transition = 'transform 0.4s ease'; // Slower transition for mouse leave
-        });
-    });
+  card.addEventListener('mouseleave', () => {
+    card.style.willChange = 'auto';
+  });
 });
 
+// 4. PROCESS STEP ANIMATIONS
+function setupProcessAnimations() {
+  const processSteps = document.querySelectorAll('.process-step');
+  
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, index) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => {
+          entry.target.style.opacity = '1';
+          entry.target.style.transform = 'translateY(0)';
+        }, index * 100);
+      }
+    });
+  }, { threshold: 0.2 });
+
+  processSteps.forEach(step => {
+    step.style.opacity = '0';
+    step.style.transform = 'translateY(20px)';
+    step.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+    observer.observe(step);
+  });
+}
+
+// 5. TECH CATEGORY ANIMATIONS
+function setupTechAnimations() {
+  const techCategories = document.querySelectorAll('.tech-category');
+  
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, index) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => {
+          entry.target.style.opacity = '1';
+          entry.target.style.transform = 'translateY(0)';
+        }, index * 100);
+      }
+    });
+  }, { threshold: 0.2 });
+
+  techCategories.forEach(cat => {
+    cat.style.opacity = '0';
+    cat.style.transform = 'translateY(20px)';
+    cat.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+    observer.observe(cat);
+  });
+}
+
+// 6. STAT ITEMS ANIMATIONS
+function setupStatAnimations() {
+  const statItems = document.querySelectorAll('.stat-item');
+  
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, index) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => {
+          entry.target.style.opacity = '1';
+          entry.target.style.transform = 'translateY(0)';
+        }, index * 80);
+      }
+    });
+  }, { threshold: 0.3 });
+
+  statItems.forEach(item => {
+    item.style.opacity = '0';
+    item.style.transform = 'translateY(20px)';
+    item.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+    observer.observe(item);
+  });
+}
+
+// 7. INITIALIZATION
+document.addEventListener('DOMContentLoaded', () => {
+  console.log(' Service section initialized');
+  
+  // Initialize all animations
+  animateCounters();
+  setupScrollAnimations();
+  setupProcessAnimations();
+  setupTechAnimations();
+  setupStatAnimations();
+});
+
+// 8. ACCESSIBILITY - Respect motion preferences
+if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  document.documentElement.style.setProperty('--transition-duration', '0.01ms');
+}
+
+// 9. PERFORMANCE MONITORING
+if (window.performance && window.performance.timing) {
+  window.addEventListener('load', () => {
+    const perfData = window.performance.timing;
+    const pageLoadTime = perfData.loadEventEnd - perfData.navigationStart;
+    console.log('Page load time:', pageLoadTime + 'ms');
+  });
+}

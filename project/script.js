@@ -122,9 +122,44 @@ function initImageLoading() {
   });
 }
 
+// Hide/Show Navigation on Scroll
+function initScrollNavigation() {
+  const nav = document.querySelector('.main-nav');
+  if (!nav) return;
+
+  let lastScrollY = 0;
+  let isNavVisible = true;
+
+  window.addEventListener('scroll', () => {
+    const currentScrollY = window.scrollY;
+
+    // Hide nav when scrolling down
+    if (currentScrollY > lastScrollY && currentScrollY > 100) {
+      if (isNavVisible) {
+        nav.style.transform = 'translateY(-100%)';
+        nav.style.opacity = '0';
+        nav.style.pointerEvents = 'none';
+        isNavVisible = false;
+      }
+    } 
+    // Show nav when scrolling up
+    else if (currentScrollY < lastScrollY) {
+      if (!isNavVisible) {
+        nav.style.transform = 'translateY(0)';
+        nav.style.opacity = '1';
+        nav.style.pointerEvents = 'auto';
+        isNavVisible = true;
+      }
+    }
+
+    lastScrollY = currentScrollY;
+  }, { passive: true });
+}
+
 // Initialize when page loads
 document.addEventListener("DOMContentLoaded", () => {
   initCustomCursor();
   initImageLoading();
+  initScrollNavigation();
 });
 
