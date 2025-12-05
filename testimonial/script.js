@@ -550,3 +550,351 @@ document.addEventListener('DOMContentLoaded', () => {
     `;
     document.head.appendChild(notificationStyles);
 });
+
+// ============================================================
+// EMAIL FUNCTIONALITY FOR TESTIMONIAL FORM
+// ============================================================
+// Initialize EmailJS
+(function() {
+    emailjs.init("YOUR_PUBLIC_KEY"); // Replace with your EmailJS public key
+})();
+
+// Handle testimonial form submission
+document.addEventListener('DOMContentLoaded', function() {
+    const feedbackForm = document.getElementById('feedbackForm');
+    
+    if (feedbackForm) {
+        feedbackForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Get form data
+            const formData = new FormData(feedbackForm);
+            const testimonialData = {
+                name: formData.get('name'),
+                email: formData.get('email'),
+                company: formData.get('company'),
+                rating: formData.get('rating'),
+                testimonial: formData.get('testimonial'),
+                permission: formData.get('permission') ? 'Yes' : 'No'
+            };
+            
+            // Send email using EmailJS
+            emailjs.send('service_your_service_id', 'template_your_template_id', testimonialData)
+                .then(function(response) {
+                    console.log('SUCCESS!', response.status, response.text);
+                    
+                    // Show success message
+                    showSuccessMessage();
+                    
+                    // Reset form
+                    feedbackForm.reset();
+                    resetStarRating();
+                    
+                }, function(error) {
+                    console.log('FAILED...', error);
+                    
+                    // Fallback: create mailto link
+                    sendEmailViaMailto(testimonialData);
+                });
+        });
+    }
+});
+
+// Show success message
+function showSuccessMessage() {
+    const successMessage = document.getElementById('successMessage');
+    const form = document.getElementById('feedbackForm');
+    
+    if (successMessage && form) {
+        form.style.display = 'none';
+        successMessage.style.display = 'block';
+        successMessage.style.opacity = '0';
+        successMessage.style.transform = 'translateY(20px)';
+        
+        // Animate success message
+        setTimeout(() => {
+            successMessage.style.transition = 'all 0.5s ease';
+            successMessage.style.opacity = '1';
+            successMessage.style.transform = 'translateY(0)';
+        }, 100);
+        
+        // Hide success message after 5 seconds and show form again
+        setTimeout(() => {
+            successMessage.style.opacity = '0';
+            successMessage.style.transform = 'translateY(20px)';
+            
+            setTimeout(() => {
+                successMessage.style.display = 'none';
+                form.style.display = 'block';
+            }, 500);
+        }, 5000);
+    }
+}
+
+// Fallback email function using mailto link
+function sendEmailViaMailto(data) {
+    const subject = encodeURIComponent(`New Testimonial from ${data.name}`);
+    const body = encodeURIComponent(
+        `Name: ${data.name}\n` +
+        `Email: ${data.email}\n` +
+        `Company/Role: ${data.company || 'Not provided'}\n` +
+        `Rating: ${data.rating} stars\n` +
+        `Testimonial: ${data.testimonial}\n` +
+        `Permission to display: ${data.permission}`
+    );
+    
+    const mailtoLink = `mailto:vedantwaghwagh@gmail.com?subject=${subject}&body=${body}`;
+    window.open(mailtoLink, '_blank');
+    
+    // Show success message
+    showSuccessMessage();
+    
+    // Reset form
+    document.getElementById('feedbackForm').reset();
+    resetStarRating();
+}
+
+// ============================================================
+// SMOOTH SCROLLING ENHANCEMENT FOR TESTIMONIALS
+// ============================================================
+function enhanceTestimonialScrolling() {
+    const carouselTrack = document.querySelector('.carousel-track');
+    if (!carouselTrack) return;
+
+    let isScrolling = false;
+    let startX = 0;
+    let scrollLeft = 0;
+    let velocity = 0;
+    let animationFrame = null;
+
+    // Smooth momentum scrolling for touch devices
+    function startMomentumScroll(currentVelocity) {
+        if (Math.abs(currentVelocity) < 0.5) return;
+
+        function animate() {
+            velocity *= 0.95; // Friction
+            carouselTrack.scrollLeft += velocity;
+
+            if (Math.abs(velocity) > 0.5) {
+                animationFrame = requestAnimationFrame(animate);
+            } else {
+                snapToNearestCard();
+            }
+        }
+
+        animate();
+    }
+
+    // Snap to nearest card after scrolling
+    function snapToNearestCard() {
+        const cards = Array.from(carouselTrack.children);
+        const trackRect = carouselTrack.getBoundingClientRect();
+        const trackCenter = trackRect.left + trackRect.width / 2;
+
+        let closestCard = null;
+        let closestDistance = Infinity;
+
+        cards.forEach(card => {
+            const cardRect = card.getBoundingClientRect();
+            const cardCenter = cardRect.left + cardRect.width / 2;
+            const distance = Math.abs(trackCenter - cardCenter);
+
+            if (distance < closestDistance) {
+                closestDistance = distance;
+                closestCard = card;
+            }
+        });
+
+        if (closestCard) {
+            const cardOffset = closestCard.offsetLeft;
+            carouselTrack.scrollTo({
+                left: cardOffset - (carouselTrack.offsetWidth - closestCard.offsetWidth) / 2,
+                behavior: 'smooth'
+            });
+        }
+    }
+
+    // Touch events for mobile
+    carouselTrack.addEventListener('touchstart', (e) => {
+        isScrolling = true;
+        startX = e.touches[0].pageX - carouselTrack.offsetLeft;
+        scrollLeft = carouselTrack.scrollLeft;
+        velocity = 0;
+        if (animationFrame) {
+            cancelAnimationFrame(animationFrame);
+        }
+    });
+
+    carouselTrack.addEventListener('touchmove', (e) => {
+        if (!isScrolling) return;
+        e.preventDefault();
+        const x = e.touches[0].pageX - carouselTrack.offsetLeft;
+        const walk = (x - startX) * 1.5; // Increase sensitivity
+        const newScrollLeft = scrollLeft - walk;
+        
+        // Calculate velocity for momentum
+        velocity = newScrollLeft - carouselTrack.scrollLeft;
+        carouselTrack.scrollLeft = newScrollLeft;
+    });
+
+    carouselTrack.addEventListener('touchend', () => {
+        isScrolling = false;
+        startMomentumScroll(velocity);
+    });
+
+    // Mouse events for desktop
+    let isMouseDown = false;
+    carouselTrack.addEventListener('mousedown', (e) => {
+        isMouseDown = true;
+        startX = e.pageX - carouselTrack.offsetLeft;
+        scrollLeft = carouselTrack.scrollLeft;
+        carouselTrack.style.cursor = 'grabbing';
+    });
+
+    carouselTrack.addEventListener('mouseleave', () => {
+        isMouseDown = false;
+        carouselTrack.style.cursor = 'grab';
+    });
+
+    carouselTrack.addEventListener('mouseup', () => {
+        isMouseDown = false;
+        carouselTrack.style.cursor = 'grab';
+        snapToNearestCard();
+    });
+
+    carouselTrack.addEventListener('mousemove', (e) => {
+        if (!isMouseDown) return;
+        e.preventDefault();
+        const x = e.pageX - carouselTrack.offsetLeft;
+        const walk = (x - startX) * 2; // Smooth scrolling
+        carouselTrack.scrollLeft = scrollLeft - walk;
+    });
+
+    // Scroll wheel smoothness
+    carouselTrack.addEventListener('wheel', (e) => {
+        e.preventDefault();
+        const delta = e.deltaY * 2; // Slower scroll speed
+        carouselTrack.scrollLeft += delta;
+        
+        // Debounced snap
+        clearTimeout(carouselTrack.snapTimeout);
+        carouselTrack.snapTimeout = setTimeout(() => {
+            snapToNearestCard();
+        }, 150);
+    });
+
+    // Set initial cursor
+    carouselTrack.style.cursor = 'grab';
+}
+
+// Reset star rating display
+function resetStarRating() {
+    const stars = document.querySelectorAll('.star-rating-input .star');
+    const ratingValue = document.getElementById('ratingValue');
+    
+    stars.forEach(star => star.classList.remove('active'));
+    if (ratingValue) ratingValue.value = '0';
+}
+
+// Initialize smooth scrolling when DOM is ready
+document.addEventListener('DOMContentLoaded', function() {
+    enhanceTestimonialScrolling();
+    initParticleAnimation();
+});
+
+// ============================================================
+// PARTICLE ANIMATION SYSTEM
+// ============================================================
+function initParticleAnimation() {
+    const canvas = document.getElementById('particle-canvas');
+    if (!canvas) return;
+
+    const ctx = canvas.getContext('2d');
+    let particles = [];
+    let mouseX = 0;
+    let mouseY = 0;
+
+    // Set canvas size
+    function resizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+
+    // Particle class
+    class Particle {
+        constructor() {
+            this.reset();
+            this.y = Math.random() * canvas.height;
+        }
+
+        reset() {
+            this.x = Math.random() * canvas.width;
+            this.y = canvas.height + 10;
+            this.size = Math.random() * 3 + 1;
+            this.speedY = Math.random() * 0.5 + 0.3; // Much slower upward speed (0.3-0.8)
+            this.speedX = (Math.random() - 0.5) * 0.1; // Slower horizontal drift (0.1 max)
+            this.opacity = Math.random() * 0.5 + 0.3;
+            this.hue = Math.random() * 60 + 240; // Purple to blue range
+        }
+
+        update() {
+            this.y -= this.speedY;
+            this.x += this.speedX;
+
+            // Mouse interaction
+            const dx = this.x - mouseX;
+            const dy = this.y - mouseY;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+            
+            if (distance < 100) {
+                const force = (100 - distance) / 100;
+                this.x += dx * force * 0.01; // Reduced force for gentler interaction
+                this.y += dy * force * 0.01;
+            }
+
+            // Reset particle if it goes off screen
+            if (this.y < -10 || this.x < -10 || this.x > canvas.width + 10) {
+                this.reset();
+            }
+        }
+
+        draw() {
+            ctx.save();
+            ctx.globalAlpha = this.opacity;
+            ctx.fillStyle = `hsl(${this.hue}, 70%, 60%)`;
+            ctx.shadowBlur = 10;
+            ctx.shadowColor = `hsl(${this.hue}, 70%, 60%)`;
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.restore();
+        }
+    }
+
+    // Create particles
+    for (let i = 0; i < 50; i++) {
+        particles.push(new Particle());
+    }
+
+    // Mouse move listener
+    window.addEventListener('mousemove', (e) => {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+    });
+
+    // Animation loop
+    function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        particles.forEach(particle => {
+            particle.update();
+            particle.draw();
+        });
+
+        requestAnimationFrame(animate);
+    }
+
+    animate();
+}
