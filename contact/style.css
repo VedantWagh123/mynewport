@@ -11,6 +11,54 @@
 */
 
 /* ============================================================ */
+/* HOME BUTTON STYLES */
+/* ============================================================ */
+.home-btn {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(168, 85, 247, 0.2));
+    border: 1px solid rgba(99, 102, 241, 0.3);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    text-decoration: none;
+    z-index: 1000;
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+    font-size: 1.2rem;
+}
+
+.home-btn:hover {
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.4), rgba(168, 85, 247, 0.4));
+    border-color: rgba(99, 102, 241, 0.6);
+    transform: scale(1.1);
+    box-shadow: 0 0 25px rgba(99, 102, 241, 0.5);
+}
+
+/* Hide home button on mobile, show only on PC */
+@media (max-width: 768px) {
+    .home-btn {
+        display: none;
+    }
+}
+
+/* Mobile responsive for home button (tablet and desktop) */
+@media (min-width: 769px) {
+    .home-btn {
+        width: 50px;
+        height: 50px;
+        top: 20px;
+        left: 20px;
+        font-size: 1.2rem;
+    }
+}
+
+/* ============================================================ */
 /* GLOBAL STYLES & BODY STYLING */
 /* ============================================================ */
 body {
@@ -481,12 +529,10 @@ body {
     .map-wrapper {
         height: 300px;
     }
-}
-        gap: 20px;
-    }
 
     .contact-hero {
         flex-direction: column;
+        gap: 20px;
     }
 
     .contact-grid {
