@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover">
     <meta name="description" content="About Vedant - Web Designer & Developer. Learn about my journey and expertise.">
     <meta name="theme-color" content="#0b0c11">
     <title>About | Vedant Portfolio</title>
@@ -98,7 +98,7 @@
 
    <p class="info-line">📍 <strong>Location:</strong> 
   <a href="https://www.google.com/maps/place/Nagpur" target="_blank" id="nagpur-link">Nagpur</a>, 
-  <strong style="color: red;">India</strong>
+  <strong>India</strong>
 </p>
 
   <p class="info-line">🌐 <strong>Languages:</strong> English, Hindi</p>
@@ -125,9 +125,18 @@
     <i class="uil uil-import"></i> Download CV
   </a>
 
-  <a href="https://www.instagram.com" class="my-blog-button" target="_blank">
-    MY BLOG <i class="uil u il-external-link-alt"></i>
+  <a href="#" class="my-blog-button" id="blogButton">
+    MY BLOG <i class="uil uil-external-link-alt"></i>
   </a>
+  <!-- Blog Modal -->
+  <div id="blogModal" style="display:none;position:fixed;z-index:9999;top:0;left:0;width:100vw;height:100vh;background:rgba(10,12,20,0.88);backdrop-filter:blur(2px);justify-content:center;align-items:center;">
+    <div style="background:#181a23;padding:2.5rem 2rem 2rem 2rem;border-radius:1.2rem;box-shadow:0 8px 32px rgba(0,0,0,0.35);max-width:92vw;width:350px;text-align:center;position:relative;border:2.5px solid #00f0ff;">
+      <span style="font-size:2.5rem;display:block;margin-bottom:0.5rem;">🚧</span>
+      <h2 style="color:#fff;font-size:1.45rem;margin-bottom:0.5rem;letter-spacing:0.5px;font-weight:700;">Blog Coming Soon</h2>
+      <p style="color:#e0e2ee;font-size:1.13rem;margin-bottom:1.2rem;line-height:1.6;font-weight:500;">Our blog page is <span style='color:#00f0ff;font-weight:700;'>not ready yet</span>.<br>We’re working hard to bring you valuable content.<br><span style='color:#7f00ff;font-weight:600;'>Please check back soon!</span></p>
+      <button id="closeBlogModal" style="background:#00f0ff;color:#181a23;border:none;padding:0.7rem 1.5rem;border-radius:2rem;font-size:1.08rem;font-weight:700;cursor:pointer;box-shadow:0 2px 8px #00f0ff33;transition:background 0.3s;outline:none;">OK</button>
+    </div>
+  </div>
 </div>
 <!-- resume resume or blog button end here  -->
 
@@ -383,7 +392,30 @@
       }, 4000);
     });
   </script>
-   <script src="script.js"></script> <!-- purn file is in /scripts/ -->
+
+  <script>
+    // Blog Modal logic
+    const blogBtn = document.getElementById('blogButton');
+    const blogModal = document.getElementById('blogModal');
+    const closeBlogModal = document.getElementById('closeBlogModal');
+    blogBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      blogModal.style.display = 'flex';
+      setTimeout(()=>{blogModal.style.opacity='1';},10);
+    });
+    closeBlogModal.addEventListener('click', function() {
+      blogModal.style.opacity='0';
+      setTimeout(()=>{blogModal.style.display='none';},250);
+    });
+    // ESC key closes modal
+    document.addEventListener('keydown', function(e) {
+      if(blogModal.style.display==='flex' && (e.key==='Escape'||e.key==='Esc')){
+        blogModal.style.opacity='0';
+        setTimeout(()=>{blogModal.style.display='none';},250);
+      }
+    });
+  </script>
+  <script src="script.js"></script> <!-- purn file is in /scripts/ -->
 
 </body>
  </html>

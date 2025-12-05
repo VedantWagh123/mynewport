@@ -57,6 +57,4 @@ window.addEventListener('DOMContentLoaded', () => {
   scrollElements.forEach(el => scrollObserver.observe(el));
 });
 
-// Typewriter / Canva animation can go below this comment
-// Example placeholder (you can paste that logic here later)
-// TODO: Add your canvas or typewriter animation code below
+
