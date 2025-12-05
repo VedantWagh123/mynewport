@@ -700,4 +700,49 @@ function initCVButton() {
 // Initialize on DOM ready
 document.addEventListener('DOMContentLoaded', () => {
   initCVButton();
+  initSocialPopup();
 });
+
+// ============================================================
+// SOCIAL MEDIA POPUP FUNCTIONALITY
+// ============================================================
+function initSocialPopup() {
+  const letsConnectBtn = document.getElementById('letsConnectBtn');
+  const socialPopup = document.getElementById('socialPopup');
+  const closeBtn = document.getElementById('closePopup');
+
+  // Open popup when "Let's Connect" button is clicked
+  if (letsConnectBtn) {
+    letsConnectBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      socialPopup.classList.add('active');
+      document.body.style.overflow = 'hidden'; // Prevent background scrolling
+    });
+  }
+
+  // Close popup when close button is clicked
+  if (closeBtn) {
+    closeBtn.addEventListener('click', () => {
+      socialPopup.classList.remove('active');
+      document.body.style.overflow = 'auto'; // Restore scrolling
+    });
+  }
+
+  // Close popup when overlay is clicked
+  if (socialPopup) {
+    socialPopup.addEventListener('click', (e) => {
+      if (e.target === socialPopup) {
+        socialPopup.classList.remove('active');
+        document.body.style.overflow = 'auto'; // Restore scrolling
+      }
+    });
+  }
+
+  // Close popup when Escape key is pressed
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && socialPopup.classList.contains('active')) {
+      socialPopup.classList.remove('active');
+      document.body.style.overflow = 'auto'; // Restore scrolling
+    }
+  });
+}
