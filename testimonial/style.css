@@ -1,16 +1,31 @@
-/* General Styles */
+/* ============================================================ */
+/* TESTIMONIALS PAGE - COMPLETE STYLESHEET */
+/* ============================================================ */
+/* This file contains all styling for the testimonials section including:
+   - Professional gradient backgrounds and animations
+   - Responsive carousel design with glassmorphism effects
+   - Interactive hover states and transitions
+   - Feedback form styling
+   - Enhanced footer with social links
+   - Mobile-responsive design across all breakpoints
+*/
+
+/* ============================================================ */
+/* GLOBAL STYLES & RESETS */
+/* ============================================================ */
 * {
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
+    box-sizing: border-box; /* Ensures consistent sizing across browsers */
 }
 
 body {
-    font-family: 'Outfit', sans-serif;
+    font-family: 'Outfit', sans-serif; /* Modern, clean font family */
     background: linear-gradient(135deg, #0f0f1e 0%, #1a1a2e 35%, #16213e 70%, #0f3460 100%);
+    /* Professional dark gradient background with multiple color stops */
     color: #fff;
     line-height: 1.6;
-    overflow-x: hidden;
+    overflow-x: hidden; /* Prevents horizontal scroll */
     min-height: 100vh;
     position: relative;
 }
@@ -27,6 +42,7 @@ body::before {
         radial-gradient(circle at 85% 15%, rgba(168, 85, 247, 0.12) 0%, transparent 40%),
         radial-gradient(circle at 50% 50%, rgba(59, 130, 246, 0.08) 0%, transparent 60%),
         radial-gradient(circle at 25% 25%, rgba(236, 72, 153, 0.06) 0%, transparent 50%);
+    /* Multiple layered radial gradients for professional background effect */
     z-index: -1;
     animation: professionalGradient 25s ease-in-out infinite;
 }
@@ -48,17 +64,25 @@ body::before {
         transform: translate(30px, 10px) rotate(270deg) scale(1.05);
         opacity: 0.9;
     }
+    /* Smooth background animation with rotation, translation, and scaling */
 }
 
+/* ============================================================ */
+/* TESTIMONIALS SECTION - MAIN CONTAINER */
+/* ============================================================ */
 .testimonial-section {
     max-width: 1200px;
     width: 100%;
     padding: clamp(20px, 5vw, 60px) clamp(15px, 4vw, 40px);
+    /* Responsive padding using clamp() for fluid scaling */
     position: relative;
     z-index: 1;
     margin: 0 auto;
 }
 
+/* ============================================================ */
+/* SECTION HEADER - TITLE & SUBTITLE */
+/* ============================================================ */
 .section-header {
     text-align: center;
     margin-bottom: 60px;
@@ -70,23 +94,27 @@ body::before {
     position: absolute;
     top: 50%;
     left: 50%;
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, rgba(99, 102, 241, 0.3), transparent);
     transform: translate(-50%, -50%);
-    width: 200%;
-    height: 200%;
-    background: radial-gradient(circle, rgba(127, 0, 255, 0.1) 0%, transparent 70%);
     z-index: -1;
     animation: pulseGlow 4s ease-in-out infinite;
+    /* Pulsing glow effect behind the header for visual depth */
 }
 
 @keyframes pulseGlow {
     0%, 100% { opacity: 0.3; transform: translate(-50%, -50%) scale(1); }
     50% { opacity: 0.6; transform: translate(-50%, -50%) scale(1.1); }
+    /* Gentle pulsing animation for the background glow */
 }
 
 .section-title {
     font-size: clamp(1.5rem, 5vw, 3rem);
+    /* Fluid typography that scales from 1.5rem to 3rem based on viewport width */
     font-weight: 800;
     background: linear-gradient(135deg, #6366f1 0%, #a855f7 25%, #3b82f6 50%, #ec4899 75%, #6366f1 100%);
+    /* Professional gradient text with multiple color stops */
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -100,6 +128,7 @@ body::before {
 @keyframes titleShimmer {
     0%, 100% { background-position: 0% 50%; }
     50% { background-position: 100% 50%; }
+    /* Shimmer effect that moves the gradient across the text */
 }
 
 .subtitle {
@@ -123,25 +152,35 @@ body::before {
         opacity: 1;
         transform: translateY(0);
     }
+    /* Smooth upward fade-in animation for the subtitle */
 }
 
-/* Carousel */
+/* ============================================================ */
+/* CAROUSEL CONTAINER & TRACK */
+/* ============================================================ */
+/* Carousel container - wrapper for the entire carousel */
 .carousel-container {
     position: relative;
 }
 
+/* Carousel track - the scrolling container for testimonial cards */
 .carousel-track {
     display: flex;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
+    overflow-x: auto; /* Enables horizontal scrolling */
+    scroll-snap-type: x mandatory; /* Enables smooth snap-to-card scrolling */
     gap: clamp(15px, 3vw, 30px);
+    /* Responsive gap between cards that scales with viewport */
     padding: clamp(15px, 3vw, 20px) clamp(10px, 2vw, 10px) clamp(30px, 4vw, 40px) clamp(10px, 2vw, 10px);
+    /* Responsive padding: top/bottom larger than left/right */
     scroll-behavior: smooth;
     position: relative;
 }
 
+/* ============================================================ */
+/* CUSTOM SCROLLBAR STYLING */
+/* ============================================================ */
 .carousel-track::-webkit-scrollbar {
-    height: 8px;
+    height: 8px; /* Horizontal scrollbar height */
 }
 
 .carousel-track::-webkit-scrollbar-track {
@@ -154,25 +193,35 @@ body::before {
     border-radius: 10px;
     border: 1px solid rgba(255, 255, 255, 0.1);
     transition: all 0.3s ease;
+    /* Gradient scrollbar thumb matching the theme colors */
 }
 
 .carousel-track::-webkit-scrollbar-thumb:hover {
     background: linear-gradient(90deg, #818cf8, #c084fc);
     transform: scaleY(1.2);
+    /* Hover effect with lighter gradient and scale */
 }
 
+/* ============================================================ */
+/* TESTIMONIAL CARDS - MAIN CONTENT CARDS */
+/* ============================================================ */
 .testimonial-card {
     flex: 0 0 clamp(280px, 35vw, 320px);
+    /* Responsive card width that scales from 280px to 320px based on viewport */
     background: linear-gradient(135deg, rgba(99, 102, 241, 0.08) 0%, rgba(168, 85, 247, 0.06) 50%, rgba(236, 72, 153, 0.04) 100%), rgba(20, 22, 35, 0.95);
+    /* Glassmorphism effect with gradient overlay and semi-transparent background */
     padding: clamp(20px, 4vw, 32px) clamp(18px, 3.5vw, 28px) clamp(18px, 3.5vw, 28px) clamp(18px, 3.5vw, 28px);
+    /* Responsive padding that scales with viewport size */
     border-radius: clamp(12px, 2vw, 24px);
-    scroll-snap-align: start;
+    scroll-snap-align: start; /* Ensures cards snap to position when scrolling */
     box-shadow: 
         0 8px 40px rgba(99, 102, 241, 0.12),
         0 4px 20px rgba(168, 85, 247, 0.08),
         inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    /* Multi-layered shadows for depth and glassmorphism effect */
     border: 1px solid rgba(99, 102, 241, 0.25);
     backdrop-filter: blur(20px) saturate(1.2);
+    /* Background blur and saturation for glass effect */
     transition: all 0.4s cubic-bezier(0.4, 1.4, 0.6, 1);
     position: relative;
     will-change: transform, box-shadow;
@@ -181,8 +230,13 @@ body::before {
     animation: fadeInCard 0.8s cubic-bezier(0.4, 1.4, 0.6, 1) forwards;
     overflow: hidden;
     min-height: clamp(200px, 40vh, 280px);
+    /* Ensures cards have consistent minimum height */
 }
 
+/* ============================================================ */
+/* CARD DECORATIVE ELEMENTS */
+/* ============================================================ */
+/* Top gradient border that animates across the card */
 .testimonial-card::before {
     content: '';
     position: absolute;
@@ -193,8 +247,10 @@ body::before {
     background: linear-gradient(90deg, #6366f1, #a855f7, #3b82f6, #ec4899, #6366f1);
     background-size: 300% 100%;
     animation: gradientFlow 4s ease-in-out infinite;
+    /* Animated gradient border for visual interest */
 }
 
+/* Rotating conic gradient that appears on hover */
 .testimonial-card::after {
     content: '';
     position: absolute;
@@ -206,30 +262,40 @@ body::before {
     animation: rotateGradient 10s linear infinite;
     opacity: 0;
     transition: opacity 0.4s ease;
+    /* Subtle rotating gradient effect for hover state */
 }
 
 @keyframes gradientFlow {
     0%, 100% { background-position: 0% 50%; }
     50% { background-position: 100% 50%; }
+    /* Smooth gradient flow animation */
 }
 
 @keyframes rotateGradient {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
+    /* Continuous rotation animation */
 }
 
+/* ============================================================ */
+/* CARD HOVER STATE */
+/* ============================================================ */
 .testimonial-card:hover {
     box-shadow: 
         0 20px 80px rgba(99, 102, 241, 0.2),
         0 10px 40px rgba(168, 85, 247, 0.15),
         0 0 0 1px rgba(99, 102, 241, 0.4);
+    /* Enhanced shadows on hover for depth */
     border-color: rgba(99, 102, 241, 0.5);
     background: linear-gradient(135deg, rgba(99, 102, 241, 0.12) 0%, rgba(168, 85, 247, 0.1) 50%, rgba(236, 72, 153, 0.06) 100%), rgba(25, 27, 40, 0.98);
+    /* Slightly darker background on hover */
     transform: translateY(-12px) scale(1.02);
+    /* Lift and scale effect on hover */
 }
 
 .testimonial-card:hover::after {
     opacity: 1;
+    /* Show rotating gradient on hover */
 }
 .testimonial-card .user-name {
   color: #fff;
@@ -1370,5 +1436,127 @@ img {
     .logo-text {
         font-size: 1.8rem;
     }
+}
+
+/* ============================================================ */
+/* NAVIGATION BUTTONS - SECTION NAVIGATION */
+/* ============================================================ */
+/* Button Container for aligning both buttons */
+.button-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 24px; /* Space between buttons */
+  margin-top: 60px;
+  margin-bottom: 40px;
+  flex-wrap: wrap;
+  max-width: 100%;
+  padding: 0 20px; /* Prevent horizontal overflow */
+  box-sizing: border-box;
+}
+
+/* Base button styles */
+.back-btn, .next-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 16px 28px;
+  border: 2px solid transparent;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  min-width: 160px;
+}
+
+/* Back button specific styling */
+.back-btn {
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(168, 85, 247, 0.1));
+  border-color: rgba(99, 102, 241, 0.3);
+  color: #6366f1;
+}
+
+.back-btn:hover {
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(168, 85, 247, 0.2));
+  border-color: #6366f1;
+  transform: translateX(-5px);
+  box-shadow: 0 8px 25px rgba(99, 102, 241, 0.3);
+}
+
+/* Next button specific styling */
+.next-btn {
+  background: linear-gradient(135deg, rgba(168, 85, 247, 0.1), rgba(99, 102, 241, 0.1));
+  border-color: rgba(168, 85, 247, 0.3);
+  color: #a855f7;
+}
+
+.next-btn:hover {
+  background: linear-gradient(135deg, rgba(168, 85, 247, 0.2), rgba(99, 102, 241, 0.2));
+  border-color: #a855f7;
+  transform: translateX(5px);
+  box-shadow: 0 8px 25px rgba(168, 85, 247, 0.3);
+}
+
+/* Arrow styling */
+.arrow {
+  font-size: 1.2rem;
+  font-weight: 700;
+  transition: transform 0.3s ease;
+}
+
+.back-btn:hover .arrow {
+  transform: translateX(-3px);
+}
+
+.next-btn:hover .arrow {
+  transform: translateX(3px);
+}
+
+/* Gradient text effect */
+.gradient-text {
+  background: linear-gradient(135deg, #6366f1, #a855f7);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Responsive Behavior */
+@media (max-width: 768px) {
+  .button-container {
+    flex-direction: column; /* Column layout on mobile */
+    align-items: center;
+    justify-content: center;
+    gap: 16px; /* Less gap on mobile */
+    margin-top: 40px;
+    margin-bottom: 30px;
+  }
+
+  .back-btn, .next-btn {
+    width: 100%; /* Full width buttons on mobile */
+    max-width: 300px;
+    justify-content: center;
+    padding: 14px 24px;
+    font-size: 0.95rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .button-container {
+    gap: 12px;
+    margin-top: 30px;
+    margin-bottom: 20px;
+  }
+
+  .back-btn, .next-btn {
+    padding: 12px 20px;
+    font-size: 0.9rem;
+    min-width: 140px;
+  }
 }
 

@@ -502,66 +502,107 @@ if (canvas && ctx) {
     update() {
       this.x += this.speedX;
       this.y += this.speedY;
-      this.size *= 0.985;
-      this.alpha -= 0.008;
+      this.alpha -= 0.01;
+      this.size -= 0.02;
+
+      // Add mode-specific behavior
+      switch (this.mode) {
+        case "orange-glow":
+          this.speedY += 0.05;
+          break;
+        case "yellow-glow":
+          this.speedX *= 0.99;
+          this.speedY *= 0.99;
+          break;
+        case "blue-bubble":
+          this.speedY -= 0.03;
+          break;
+        case "red-pulse":
+          this.size += Math.sin(Date.now() * 0.01) * 0.1;
+          break;
+        case "green-orbit":
+          const angle = Date.now() * 0.001;
+          this.speedX = Math.cos(angle) * 2;
+          this.speedY = Math.sin(angle) * 2;
+          break;
+        case "white-rain":
+          this.speedY += 0.1;
+          this.speedX = 0;
+          break;
+        case "electric-purple":
+          this.speedX += (Math.random() - 0.5) * 0.5;
+          this.speedY += (Math.random() - 0.5) * 0.5;
+          break;
+        case "aqua-neon":
+          this.speedX = Math.sin(Date.now() * 0.01) * 2;
+          this.speedY = Math.cos(Date.now() * 0.01) * 2;
+          break;
+        case "pink-spark":
+          this.speedX *= 1.05;
+          this.speedY *= 1.05;
+          break;
+        case "cyber-teal":
+          this.speedX += Math.sin(this.y * 0.01) * 0.2;
+          this.speedY += Math.cos(this.x * 0.01) * 0.2;
+          break;
+      }
     }
 
     draw() {
       ctx.save();
       ctx.globalAlpha = this.alpha;
-      ctx.shadowBlur = 0;
-      ctx.shadowColor = "transparent";
 
+      // Mode-specific colors and effects
       switch (this.mode) {
-        case "yellow-glow":
-          ctx.fillStyle = "#ffff66";
-          ctx.shadowColor = "#ffff99";
+        case "orange-glow":
+          ctx.fillStyle = "#ff6b35";
           ctx.shadowBlur = 10;
+          ctx.shadowColor = "#ff6b35";
+          break;
+        case "yellow-glow":
+          ctx.fillStyle = "#ffd700";
+          ctx.shadowBlur = 15;
+          ctx.shadowColor = "#ffd700";
           break;
         case "blue-bubble":
-          ctx.fillStyle = "#66ccff";
-          ctx.shadowColor = "#b3e0ff";
-          ctx.shadowBlur = 15;
+          ctx.fillStyle = "#00bfff";
+          ctx.shadowBlur = 20;
+          ctx.shadowColor = "#00bfff";
           break;
         case "red-pulse":
-          ctx.fillStyle = "#ff4d4d";
-          ctx.shadowColor = "#ff9999";
-          ctx.shadowBlur = 12;
+          ctx.fillStyle = "#ff1493";
+          ctx.shadowBlur = 25;
+          ctx.shadowColor = "#ff1493";
           break;
         case "green-orbit":
-          ctx.fillStyle = "#66ff66";
-          ctx.shadowColor = "#b3ffb3";
+          ctx.fillStyle = "#00ff00";
           ctx.shadowBlur = 15;
+          ctx.shadowColor = "#00ff00";
           break;
         case "white-rain":
           ctx.fillStyle = "#ffffff";
-          ctx.shadowColor = "#eeeeee";
-          ctx.shadowBlur = 18;
+          ctx.shadowBlur = 5;
+          ctx.shadowColor = "#ffffff";
           break;
         case "electric-purple":
-          ctx.fillStyle = "#c77dff";
-          ctx.shadowColor = "#e0b3ff";
-          ctx.shadowBlur = 20;
+          ctx.fillStyle = "#9400d3";
+          ctx.shadowBlur = 30;
+          ctx.shadowColor = "#9400d3";
           break;
         case "aqua-neon":
-          ctx.fillStyle = "#00ffe7";
-          ctx.shadowColor = "#00fff2";
+          ctx.fillStyle = "#00ffff";
           ctx.shadowBlur = 25;
+          ctx.shadowColor = "#00ffff";
           break;
         case "pink-spark":
-          ctx.fillStyle = "#ff66cc";
-          ctx.shadowColor = "#ffb3e6";
-          ctx.shadowBlur = 18;
+          ctx.fillStyle = "#ff69b4";
+          ctx.shadowBlur = 20;
+          ctx.shadowColor = "#ff69b4";
           break;
         case "cyber-teal":
-          ctx.fillStyle = "#66ffcc";
-          ctx.shadowColor = "#ccffee";
-          ctx.shadowBlur = 20;
-          break;
-        default:
-          ctx.fillStyle = "#ffa64d";
-          ctx.shadowColor = "#ffcc80";
-          ctx.shadowBlur = 12;
+          ctx.fillStyle = "#008080";
+          ctx.shadowBlur = 18;
+          ctx.shadowColor = "#008080";
           break;
       }
 

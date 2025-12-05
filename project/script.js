@@ -1,6 +1,20 @@
-// Optimized cursor animation for performance
-// ============================================
+// ============================================================
+// PROJECTS PAGE - COMPLETE JAVASCRIPT FUNCTIONALITY
+// ============================================================
+// This file contains all interactive functionality for the projects showcase section including:
+// - Custom cursor with smooth animations and click effects
+// - Project filtering and grid management
+// - Modal/lightbox functionality for project details
+// - Gallery image viewing with navigation
+// - Performance optimizations and smooth transitions
+// - Touch/swipe support for mobile devices
+// ============================================================
 
+// ============================================================
+// CUSTOM CURSOR SYSTEM
+// ============================================================
+
+// Global cursor variables for tracking and animation
 let cursor = null;
 let cursorOutline = null;
 let mouseX = 0;
@@ -9,21 +23,23 @@ let outlineX = 0;
 let outlineY = 0;
 let isAnimating = false;
 
-// Track mouse position - debounced for performance
+// Track mouse position - optimized for performance
 function handleMouseMove(e) {
   mouseX = e.clientX;
   mouseY = e.clientY;
   
+  // Only animate if not already animating to prevent performance issues
   if (!isAnimating) {
     isAnimating = true;
   }
 }
 
-// Click effect
+// Mouse down effect - cursor scales down when clicking
 function handleMouseDown() {
   cursor?.classList.add('click');
 }
 
+// Mouse up effect - cursor returns to normal size
 function handleMouseUp() {
   cursor?.classList.remove('click');
 }

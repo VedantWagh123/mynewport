@@ -1,21 +1,37 @@
-/* General Styles */
+/* ============================================================ */
+/* CONTACT PAGE - COMPLETE STYLESHEET */
+/* ============================================================ */
+/* This file contains all styling for the contact section including:
+   - Contact form with validation and animations
+   - Navigation with hide/show functionality
+   - Contact information cards
+   - Social media links integration
+   - Responsive design across all breakpoints
+   - Form submission handling and feedback
+*/
+
+/* ============================================================ */
+/* GLOBAL STYLES & BODY STYLING */
+/* ============================================================ */
 body {
-    font-family: 'Outfit', sans-serif;
-    background-color: #111;
+    font-family: 'Outfit', sans-serif; /* Modern, clean font family */
+    background-color: #111; /* Dark background for contact page */
     color: #fff;
     line-height: 1.6;
-    overflow-x: hidden;
-    padding-top: 80px;
+    overflow-x: hidden; /* Prevents horizontal scroll */
+    padding-top: 80px; /* Space for fixed navigation */
 }
 
-/* Contact Navigation */
+/* ============================================================ */
+/* CONTACT NAVIGATION */
+/* ============================================================ */
 .contact-nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 20px 40px;
     background: rgba(0, 0, 0, 0.3);
-    backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px); /* Glassmorphism effect */
     position: fixed;
     top: 0;
     left: 0;
@@ -24,6 +40,7 @@ body {
     transition: transform 0.3s ease-out, opacity 0.3s ease-out;
 }
 
+/* Hidden state for navigation (when scrolling down) */
 .contact-nav.hide {
     transform: translateY(-100%);
     opacity: 0;

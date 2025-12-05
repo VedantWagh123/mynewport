@@ -1,22 +1,37 @@
-  /* Reset & Base */
+  /* ============================================================ */
+/* ABOUT PAGE - COMPLETE STYLESHEET */
+/* ============================================================ */
+/* This file contains all styling for the about section including:
+   - Hero section with animated backgrounds
+   - Personal information and biography sections
+   - Skills and expertise showcase
+   - Timeline of experience and achievements
+   - Social media links integration
+   - Responsive design across all breakpoints
+   - Performance optimizations and animations
+*/
+
+/* ============================================================ */
+/* RESET & BASE STYLES */
+/* ============================================================ */
 * {
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
+  box-sizing: border-box; /* Ensures consistent sizing across browsers */
 }
 
 html {
   font-size: 16px;
-  overflow-x: hidden;
-  scroll-behavior: smooth;
+  overflow-x: hidden; /* Prevents horizontal scroll */
+  scroll-behavior: smooth; /* Smooth scrolling for anchor links */
   width: 100vw;
   max-width: 100vw;
   min-width: 0;
 }
 
 body {
-  font-family: 'Poppins', sans-serif;
-  background: #0f0f0f;
+  font-family: 'Poppins', sans-serif; /* Modern, readable font family */
+  background: #0f0f0f; /* Dark background for about page */
   color: #ffffff;
   line-height: 1.6;
   overflow-x: hidden;
@@ -26,6 +41,7 @@ body {
   min-height: 100vh;
 }
 
+/* Link styling with hover effects */
 a {
   text-decoration: none;
   color: inherit;

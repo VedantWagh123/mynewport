@@ -1,4 +1,21 @@
+// ============================================================
+// TESTIMONIALS PAGE - COMPLETE JAVASCRIPT FUNCTIONALITY
+// ============================================================
+// This file contains all interactive functionality for the testimonials section including:
+// - Carousel navigation with auto-scroll and manual controls
+// - Star rating display and animations
+// - Parallax mouse effects
+// - Intersection observer for scroll animations
+// - Floating particle effects
+// - Feedback form handling with validation
+// - Back-to-top button functionality
+// - Touch/swipe support for mobile devices
+// ============================================================
+
 document.addEventListener('DOMContentLoaded', () => {
+    // ============================================================
+    // DOM ELEMENT REFERENCES
+    // ============================================================
     const track = document.querySelector('.carousel-track');
     const cards = Array.from(track.children);
     const nextButton = document.querySelector('.next');
@@ -6,51 +23,65 @@ document.addEventListener('DOMContentLoaded', () => {
     const sectionHeader = document.querySelector('.section-header');
     const testimonialSection = document.querySelector('.testimonial-section');
 
-    // Initialize animations
+    // ============================================================
+    // INITIALIZATION FUNCTIONS
+    // ============================================================
+    // Initialize all interactive features when page loads
     initAnimations();
     initCarousel();
     initStarRatings();
     initParallaxEffect();
     initIntersectionObserver();
 
+    // ============================================================
+    // ANIMATIONS INITIALIZATION
+    // ============================================================
     function initAnimations() {
-        // Stagger card animations
+        // Stagger card animations for smooth entrance effect
         cards.forEach((card, index) => {
             card.style.animationDelay = `${index * 0.1}s`;
             card.style.animationDuration = '0.8s';
         });
 
-        // Add floating particles effect
+        // Add floating particles effect for visual enhancement
         createFloatingParticles();
     }
 
+    // ============================================================
+    // CAROUSEL FUNCTIONALITY
+    // ============================================================
     function initCarousel() {
-        const cardWidth = cards[0].getBoundingClientRect().width + 30; // Include gap
+        const cardWidth = cards[0].getBoundingClientRect().width + 30; // Include gap between cards
         let isAutoScrolling = true;
         let autoScrollInterval;
 
-        // Auto-scroll functionality
+        // ============================================================
+        // AUTO-SCROLL FUNCTIONALITY
+        // ============================================================
         function startAutoScroll() {
             autoScrollInterval = setInterval(() => {
                 const maxScroll = track.scrollWidth - track.clientWidth;
                 const currentScroll = track.scrollLeft;
                 
+                // If reached the end, loop back to start
                 if (currentScroll >= maxScroll - 1) {
                     track.scrollTo({ left: 0, behavior: 'smooth' });
                 } else {
                     track.scrollBy({ left: cardWidth, behavior: 'smooth' });
                 }
-            }, 4000);
+            }, 4000); // Auto-scroll every 4 seconds
         }
 
         function stopAutoScroll() {
             clearInterval(autoScrollInterval);
         }
 
-        // Start auto-scroll
+        // Start auto-scroll immediately
         startAutoScroll();
 
-        // Button controls
+        // ============================================================
+        // MANUAL CONTROLS (NEXT/PREV BUTTONS)
+        // ============================================================
         nextButton.addEventListener('click', () => {
             stopAutoScroll();
             const maxScroll = track.scrollWidth - track.clientWidth;
@@ -62,6 +93,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 track.scrollBy({ left: cardWidth, behavior: 'smooth' });
             }
             
+            // Resume auto-scroll after 5 seconds
             setTimeout(startAutoScroll, 5000);
         });
 
@@ -75,37 +107,50 @@ document.addEventListener('DOMContentLoaded', () => {
                 track.scrollBy({ left: -cardWidth, behavior: 'smooth' });
             }
             
+            // Resume auto-scroll after 5 seconds
             setTimeout(startAutoScroll, 5000);
         });
 
-        // Pause auto-scroll on hover
+        // ============================================================
+        // AUTO-SCROLL CONTROL ON HOVER
+        // ============================================================
+        // Pause auto-scroll when user hovers over carousel
         track.addEventListener('mouseenter', stopAutoScroll);
         track.addEventListener('mouseleave', startAutoScroll);
 
-        // Add scroll-based animations
+        // ============================================================
+        // SCROLL-BASED ANIMATIONS
+        // ============================================================
         track.addEventListener('scroll', () => {
             const scrollProgress = track.scrollLeft / (track.scrollWidth - track.clientWidth);
             updateScrollIndicators(scrollProgress);
         });
     }
 
+    // ============================================================
+    // STAR RATING DISPLAY FUNCTIONALITY
+    // ============================================================
     function initStarRatings() {
         const ratings = document.querySelectorAll('.star-rating');
         ratings.forEach((rating, index) => {
             const score = rating.dataset.rating;
+            // Display filled stars based on rating score
             rating.innerHTML = '★'.repeat(score) + '☆'.repeat(5 - score);
             
-            // Add entrance animation
+            // Add entrance animation with staggered timing
             rating.style.opacity = '0';
             rating.style.transform = 'scale(0)';
             setTimeout(() => {
                 rating.style.transition = 'all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55)';
                 rating.style.opacity = '1';
                 rating.style.transform = 'scale(1)';
-            }, 1000 + (index * 100));
+            }, 1000 + (index * 100)); // Stagger animations
         });
     }
 
+    // ============================================================
+    // PARALLAX MOUSE EFFECTS
+    // ============================================================
     function initParallaxEffect() {
         document.addEventListener('mousemove', (e) => {
             const mouseX = e.clientX / window.innerWidth;
@@ -113,12 +158,12 @@ document.addEventListener('DOMContentLoaded', () => {
             
             // Parallax effect for section header
             if (sectionHeader) {
-                const moveX = (mouseX - 0.5) * 20;
+                const moveX = (mouseX - 0.5) * 20; // Move up to 20px
                 const moveY = (mouseY - 0.5) * 20;
                 sectionHeader.style.transform = `translate(${moveX}px, ${moveY}px)`;
             }
 
-            // Subtle card parallax
+            // Subtle card parallax effect based on mouse proximity
             cards.forEach((card, index) => {
                 const rect = card.getBoundingClientRect();
                 const cardCenterX = rect.left + rect.width / 2;
@@ -127,6 +172,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const distanceY = e.clientY - cardCenterY;
                 const distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
                 
+                // Apply parallax effect when mouse is within 300px of card
                 if (distance < 300) {
                     const intensity = 1 - (distance / 300);
                     const moveX = (distanceX / 300) * 10 * intensity;
@@ -140,10 +186,13 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // ============================================================
+    // INTERSECTION OBSERVER FOR SCROLL ANIMATIONS
+    // ============================================================
     function initIntersectionObserver() {
         const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
+            threshold: 0.1, // Trigger when 10% of element is visible
+            rootMargin: '0px 0px -50px 0px' // Start 50px before element enters viewport
         };
 
         const observer = new IntersectionObserver((entries) => {
@@ -151,7 +200,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('visible');
                     
-                    // Trigger special effects for cards
+                    // Trigger special effects for cards when they come into view
                     if (entry.target.classList.contains('testimonial-card')) {
                         addCardEntranceEffect(entry.target);
                     }
@@ -159,11 +208,15 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }, observerOptions);
 
-        // Observe all cards
+        // Observe all testimonial cards for scroll animations
         cards.forEach(card => observer.observe(card));
     }
 
+    // ============================================================
+    // FLOATING PARTICLES EFFECT
+    // ============================================================
     function createFloatingParticles() {
+        // Create 15 floating particles for background effect
         for (let i = 0; i < 15; i++) {
             const particle = document.createElement('div');
             particle.className = 'floating-particle';
@@ -183,7 +236,7 @@ document.addEventListener('DOMContentLoaded', () => {
             document.body.appendChild(particle);
         }
 
-        // Add particle animation CSS
+        // Add particle animation CSS dynamically
         const style = document.createElement('style');
         style.textContent = `
             @keyframes floatParticle {
@@ -206,8 +259,11 @@ document.addEventListener('DOMContentLoaded', () => {
         document.head.appendChild(style);
     }
 
+    // ============================================================
+    // CARD ENTRANCE EFFECT
+    // ============================================================
     function addCardEntranceEffect(card) {
-        // Add entrance glow effect
+        // Add entrance glow effect when card comes into view
         const glow = document.createElement('div');
         glow.style.cssText = `
             position: absolute;
@@ -223,18 +279,24 @@ document.addEventListener('DOMContentLoaded', () => {
         `;
         card.appendChild(glow);
 
+        // Remove glow element after animation completes
         setTimeout(() => glow.remove(), 600);
     }
 
+    // ============================================================
+    // SCROLL INDICATORS UPDATE
+    // ============================================================
     function updateScrollIndicators(progress) {
-        // Update any scroll progress indicators
+        // Update any scroll progress indicators (if present)
         const indicators = document.querySelectorAll('.scroll-indicator');
         indicators.forEach(indicator => {
             indicator.style.width = `${progress * 100}%`;
         });
     }
 
-    // Add keyboard navigation
+    // ============================================================
+    // KEYBOARD NAVIGATION
+    // ============================================================
     document.addEventListener('keydown', (e) => {
         if (e.key === 'ArrowLeft') {
             prevButton.click();
@@ -243,7 +305,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Add touch swipe support
+    // ============================================================
+    // TOUCH/SWIPE SUPPORT FOR MOBILE
+    // ============================================================
     let touchStartX = 0;
     let touchEndX = 0;
 
@@ -257,19 +321,21 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     function handleSwipe() {
-        const swipeThreshold = 50;
+        const swipeThreshold = 50; // Minimum swipe distance
         const diff = touchStartX - touchEndX;
         
         if (Math.abs(diff) > swipeThreshold) {
             if (diff > 0) {
-                nextButton.click();
+                nextButton.click(); // Swipe left = next
             } else {
-                prevButton.click();
+                prevButton.click(); // Swipe right = previous
             }
         }
     }
 
-    // Add resize handler
+    // ============================================================
+    // WINDOW RESIZE HANDLER
+    // ============================================================
     window.addEventListener('resize', () => {
         // Recalculate card width on resize
         const newCardWidth = cards[0].getBoundingClientRect().width + 30;
