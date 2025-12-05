@@ -121,9 +121,18 @@
 <br><br>
 <!-- RESUME BUTTON  -->
  <div class="button-contain">
-  <a href="https://www.google.com" class="resume-b">
+  <a href="#" class="resume-b" id="cvButton">
     <i class="uil uil-import"></i> Download CV
   </a>
+  <!-- CV Modal -->
+  <div id="cvModal" style="display:none;position:fixed;z-index:9999;top:0;left:0;width:100vw;height:100vh;background:rgba(10,12,20,0.88);backdrop-filter:blur(2px);justify-content:center;align-items:center;">
+    <div style="background:#181a23;padding:2.5rem 2rem 2rem 2rem;border-radius:1.2rem;box-shadow:0 8px 32px rgba(0,0,0,0.35);max-width:92vw;width:350px;text-align:center;position:relative;border:2.5px solid #00f0ff;">
+      <span style="font-size:2.5rem;display:block;margin-bottom:0.5rem;">📄</span>
+      <h2 style="color:#fff;font-size:1.45rem;margin-bottom:0.5rem;letter-spacing:0.5px;font-weight:700;">CV Download Unavailable</h2>
+      <p style="color:#e0e2ee;font-size:1.13rem;margin-bottom:1.2rem;line-height:1.6;font-weight:500;">The CV download feature is <span style='color:#00f0ff;font-weight:700;'>not ready yet</span>.<br>We’re updating the document.<br><span style='color:#7f00ff;font-weight:600;'>Please check back soon!</span></p>
+      <button id="closeCvModal" style="background:#00f0ff;color:#181a23;border:none;padding:0.7rem 1.5rem;border-radius:2rem;font-size:1.08rem;font-weight:700;cursor:pointer;box-shadow:0 2px 8px #00f0ff33;transition:background 0.3s;outline:none;">OK</button>
+    </div>
+  </div>
 
   <a href="#" class="my-blog-button" id="blogButton">
     MY BLOG <i class="uil uil-external-link-alt"></i>
@@ -407,11 +416,28 @@
       blogModal.style.opacity='0';
       setTimeout(()=>{blogModal.style.display='none';},250);
     });
-    // ESC key closes modal
+    // CV Modal logic
+    const cvBtn = document.getElementById('cvButton');
+    const cvModal = document.getElementById('cvModal');
+    const closeCvModal = document.getElementById('closeCvModal');
+    cvBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      cvModal.style.display = 'flex';
+      setTimeout(()=>{cvModal.style.opacity='1';},10);
+    });
+    closeCvModal.addEventListener('click', function() {
+      cvModal.style.opacity='0';
+      setTimeout(()=>{cvModal.style.display='none';},250);
+    });
+    // ESC key closes either modal
     document.addEventListener('keydown', function(e) {
       if(blogModal.style.display==='flex' && (e.key==='Escape'||e.key==='Esc')){
         blogModal.style.opacity='0';
         setTimeout(()=>{blogModal.style.display='none';},250);
+      }
+      if(cvModal.style.display==='flex' && (e.key==='Escape'||e.key==='Esc')){
+        cvModal.style.opacity='0';
+        setTimeout(()=>{cvModal.style.display='none';},250);
       }
     });
   </script>
