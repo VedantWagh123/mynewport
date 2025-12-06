@@ -1927,3 +1927,7 @@ img {
   }
 }
 
+
+.gradient-text{ 
+    text-decoration: none;
+}

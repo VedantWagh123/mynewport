@@ -16,6 +16,136 @@
   --transition-snappy: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
+/* Custom Cursor Styles */
+.custom-cursor {
+  position: fixed;
+  width: 40px;
+  height: 40px;
+  pointer-events: none;
+  z-index: 9999;
+  mix-blend-mode: difference;
+  transition: transform 0.1s ease-out;
+}
+
+.cursor-dot {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 8px;
+  height: 8px;
+  background: var(--accent-secondary);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 20px var(--accent-secondary);
+  transition: all 0.3s ease;
+}
+
+.cursor-outline {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 40px;
+  height: 40px;
+  border: 2px solid var(--accent-primary);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: all 0.3s ease;
+  box-shadow: 0 0 30px var(--accent-primary);
+}
+
+.custom-cursor.hover .cursor-outline {
+  width: 60px;
+  height: 60px;
+  border-color: var(--accent-secondary);
+  background: rgba(0, 240, 255, 0.1);
+}
+
+.custom-cursor.featured-hover .cursor-outline {
+  width: 80px;
+  height: 80px;
+  border-color: var(--accent-secondary);
+  background: radial-gradient(circle, rgba(0, 240, 255, 0.2) 0%, transparent 70%);
+  box-shadow: 0 0 40px var(--accent-secondary);
+}
+
+.custom-cursor.featured-hover .cursor-dot {
+  width: 12px;
+  height: 12px;
+  background: var(--accent-secondary);
+  box-shadow: 0 0 30px var(--accent-secondary);
+}
+
+.custom-cursor.master-hover .cursor-outline {
+  width: 100px;
+  height: 100px;
+  border-color: var(--accent-primary);
+  background: radial-gradient(circle, rgba(127, 0, 255, 0.3) 0%, rgba(127, 0, 255, 0.1) 50%, transparent 70%);
+  box-shadow: 0 0 60px var(--accent-primary), inset 0 0 30px rgba(127, 0, 255, 0.2);
+  animation: masterPulse 2s ease-in-out infinite;
+}
+
+.custom-cursor.master-hover .cursor-dot {
+  width: 16px;
+  height: 16px;
+  background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+  box-shadow: 0 0 40px var(--accent-primary), 0 0 20px var(--accent-secondary);
+  animation: masterDotPulse 1.5s ease-in-out infinite;
+}
+
+@keyframes masterPulse {
+  0%, 100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.1);
+    opacity: 0.8;
+  }
+}
+
+@keyframes masterDotPulse {
+  0%, 100% {
+    transform: translate(-50%, -50%) scale(1);
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.3);
+  }
+}
+
+.custom-cursor.link-hover .cursor-outline {
+  width: 50px;
+  height: 50px;
+  border-color: var(--accent-primary);
+  background: rgba(127, 0, 255, 0.15);
+}
+
+.custom-cursor.badge-hover .cursor-outline {
+  width: 45px;
+  height: 45px;
+  border-color: var(--accent-secondary);
+  background: rgba(0, 240, 255, 0.1);
+}
+
+.custom-cursor.footer-hover .cursor-outline {
+  width: 55px;
+  height: 55px;
+  border-color: var(--accent-primary);
+  background: rgba(127, 0, 255, 0.1);
+}
+
+.custom-cursor.click .cursor-outline {
+  width: 30px;
+  height: 30px;
+  border-color: var(--accent-secondary);
+  background: rgba(0, 240, 255, 0.2);
+}
+
+.custom-cursor.click .cursor-dot {
+  width: 16px;
+  height: 16px;
+  background: var(--accent-secondary);
+}
+
 html {
   scroll-behavior: smooth;
   background-color: var(--bg-primary);
@@ -25,6 +155,7 @@ html,
 body {
   max-width: 100vw;
   overflow-x: hidden;
+  overflow-y: auto;
   touch-action: manipulation;
 }
 
@@ -37,6 +168,7 @@ body {
   color: #fff;
   line-height: 1.6;
   min-height: 100vh;
+  overflow-x: hidden;
 }
 
 a {
@@ -316,10 +448,6 @@ canvas#particle-canvas {
   box-shadow: 0 0 14px rgba(127, 0, 255, 0.45);
 }
 
-.secondary-btn:hover svg {
-  stroke: #fff;
-}
-
 .blob {
   position: absolute;
   border-radius: 50%;
@@ -531,6 +659,12 @@ body {
   opacity: 0;
   transform: translateY(30px);
   transition: all 1s ease;
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
 }
 
 .hero-section.fade-in {
@@ -538,18 +672,9 @@ body {
   transform: translateY(0);
 }
 
-
-/* Main content hidden initially */
-#main-content {
-  opacity: 0;
-  transform: translateY(30px);
-  transition: all 1s ease;
-}
-
-/* Fade-in trigger */
-#main-content.fade-in {
-  opacity: 1;
-  transform: translateY(0);
+@keyframes fadeInText {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
 }
  /* Welcome text inner animation */
  .welcome-text {

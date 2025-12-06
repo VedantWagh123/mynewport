@@ -348,207 +348,98 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialize Back to Top Button
     initBackToTop();
 
+    // ============================================================
+    // FEEDBACK FORM FUNCTIONALITY
+    // ============================================================
     function initFeedbackForm() {
         const form = document.getElementById('feedbackForm');
-        const successMessage = document.getElementById('successMessage');
-        const stars = document.querySelectorAll('.star-rating-input .star');
-        const ratingValue = document.getElementById('ratingValue');
-        let selectedRating = 0;
+        if (!form) return;
 
-        // Star rating functionality
-        stars.forEach(star => {
-            star.addEventListener('click', () => {
-                selectedRating = parseInt(star.dataset.rating);
-                ratingValue.value = selectedRating;
-                updateStarDisplay(selectedRating);
-            });
-
-            star.addEventListener('mouseenter', () => {
-                const hoverRating = parseInt(star.dataset.rating);
-                updateStarDisplay(hoverRating);
-            });
-        });
-
-        document.getElementById('starRating').addEventListener('mouseleave', () => {
-            updateStarDisplay(selectedRating);
-        });
-
-        function updateStarDisplay(rating) {
-            stars.forEach((star, index) => {
-                if (index < rating) {
-                    star.classList.add('active');
-                } else {
-                    star.classList.remove('active');
-                }
-            });
-        }
-
-        // Form submission
         form.addEventListener('submit', (e) => {
             e.preventDefault();
             
-            // Validate rating
-            if (selectedRating === 0) {
-                showNotification('Please select a rating', 'error');
-                return;
-            }
-
             // Get form data
             const formData = new FormData(form);
-            const data = Object.fromEntries(formData);
+            const testimonialData = {
+                name: formData.get('name'),
+                email: formData.get('email'),
+                company: formData.get('company'),
+                rating: formData.get('rating'),
+                testimonial: formData.get('testimonial'),
+                permission: formData.get('permission') ? 'Yes' : 'No'
+            };
+
+            // Here you would normally send this data to a server
+            console.log('Testimonial submitted:', testimonialData);
             
-            // Simulate form submission (in real app, this would be an API call)
-            submitFeedback(data);
-        });
-
-        function submitFeedback(data) {
-            // Show loading state
-            const submitBtn = form.querySelector('.submit-btn');
-            const originalContent = submitBtn.innerHTML;
-            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...';
-            submitBtn.disabled = true;
-
-            // Simulate API call
-            setTimeout(() => {
-                // Hide form and show success message
-                form.style.display = 'none';
-                successMessage.classList.add('show');
-
-                // Reset form
-                form.reset();
-                selectedRating = 0;
-                updateStarDisplay(0);
-
-                // Reset button after delay
-                setTimeout(() => {
-                    submitBtn.innerHTML = originalContent;
-                    submitBtn.disabled = false;
-                    form.style.display = 'block';
-                    successMessage.classList.remove('show');
-                }, 5000);
-            }, 2000);
-        }
-
-        // Form field animations
-        const formInputs = form.querySelectorAll('input, textarea');
-        formInputs.forEach(input => {
-            input.addEventListener('focus', () => {
-                input.parentElement.classList.add('focused');
-            });
-
-            input.addEventListener('blur', () => {
-                if (!input.value) {
-                    input.parentElement.classList.remove('focused');
-                }
-            });
-
-            input.addEventListener('input', () => {
-                if (input.value) {
-                    input.parentElement.classList.add('has-value');
-                } else {
-                    input.parentElement.classList.remove('has-value');
-                }
-            });
+            // Show success message
+            showNotification('Thank you for your feedback! We appreciate your testimonial.', 'success');
+            
+            // Reset form
+            form.reset();
         });
     }
 
+    // ============================================================
+    // BACK TO TOP BUTTON
+    // ============================================================
     function initBackToTop() {
         const backToTopBtn = document.getElementById('backToTop');
+        if (!backToTopBtn) return;
 
         window.addEventListener('scroll', () => {
-            if (window.pageYOffset > 300) {
-                backToTopBtn.classList.add('show');
+            if (window.scrollY > 300) {
+                backToTopBtn.classList.add('visible');
             } else {
-                backToTopBtn.classList.remove('show');
+                backToTopBtn.classList.remove('visible');
             }
         });
 
         backToTopBtn.addEventListener('click', () => {
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-            });
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         });
     }
 
+    // ============================================================
+    // NOTIFICATION SYSTEM
+    // ============================================================
     function showNotification(message, type = 'info') {
-        // Create notification element
         const notification = document.createElement('div');
         notification.className = `notification ${type}`;
-        notification.innerHTML = `
-            <div class="notification-content">
-                <i class="fas ${type === 'error' ? 'fa-exclamation-circle' : 'fa-info-circle'}"></i>
-                <span>${message}</span>
-            </div>
-        `;
-
-        // Add styles
+        notification.textContent = message;
+        
+        // Style the notification
         notification.style.cssText = `
             position: fixed;
             top: 20px;
             right: 20px;
-            background: ${type === 'error' ? 'rgba(239, 68, 68, 0.9)' : 'rgba(99, 102, 241, 0.9)'};
-            color: white;
             padding: 15px 20px;
-            border-radius: 8px;
-            backdrop-filter: blur(10px);
+            background: ${type === 'success' ? 'linear-gradient(135deg, #10b981, #059669)' : 'linear-gradient(135deg, #3b82f6, #1d4ed8)'};
+            color: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
             z-index: 10000;
-            animation: slideInRight 0.3s ease-out;
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
             max-width: 300px;
+            font-size: 14px;
         `;
-
+        
         document.body.appendChild(notification);
-
-        // Remove after 3 seconds
+        
+        // Animate in
         setTimeout(() => {
-            notification.style.animation = 'slideOutRight 0.3s ease-out';
-            setTimeout(() => {
-                document.body.removeChild(notification);
-            }, 300);
-        }, 3000);
+            notification.style.transform = 'translateX(0)';
+        }, 100);
+        
+        // Remove after 5 seconds
+        setTimeout(() => {
+            notification.style.transform = 'translateX(400px)';
+            setTimeout(() => notification.remove(), 300);
+        }, 5000);
     }
 
-    // Add notification animations to head
-    const notificationStyles = document.createElement('style');
-    notificationStyles.textContent = `
-        @keyframes slideInRight {
-            from {
-                transform: translateX(100%);
-                opacity: 0;
-            }
-            to {
-                transform: translateX(0);
-                opacity: 1;
-            }
-        }
-
-        @keyframes slideOutRight {
-            from {
-                transform: translateX(0);
-                opacity: 1;
-            }
-            to {
-                transform: translateX(100%);
-                opacity: 0;
-            }
-        }
-
-        .notification-content {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .form-group.focused label {
-            color: #6366f1;
-        }
-
-        .form-group.has-value input,
-        .form-group.has-value textarea {
-            background: rgba(99, 102, 241, 0.05);
-        }
-    `;
-    document.head.appendChild(notificationStyles);
+    console.log('Testimonials section initialized with full functionality');
 });
 
 // ============================================================
@@ -579,426 +470,194 @@ document.addEventListener('DOMContentLoaded', function() {
             };
             
             // Send email using EmailJS
-            emailjs.send('service_your_service_id', 'template_your_template_id', testimonialData)
+            emailjs.send('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', testimonialData)
                 .then(function(response) {
                     console.log('SUCCESS!', response.status, response.text);
-                    
-                    // Show success message
-                    showSuccessMessage();
-                    
-                    // Reset form
+                    showNotification('Thank you for your testimonial! It has been sent successfully.', 'success');
                     feedbackForm.reset();
-                    resetStarRating();
-                    
                 }, function(error) {
                     console.log('FAILED...', error);
-                    
-                    // Fallback: create mailto link
-                    sendEmailViaMailto(testimonialData);
+                    showNotification('Sorry, there was an error sending your testimonial. Please try again.', 'error');
                 });
         });
     }
 });
 
-// Show success message
-function showSuccessMessage() {
-    const successMessage = document.getElementById('successMessage');
-    const form = document.getElementById('feedbackForm');
-    
-    if (successMessage && form) {
-        form.style.display = 'none';
-        successMessage.style.display = 'block';
-        successMessage.style.opacity = '0';
-        successMessage.style.transform = 'translateY(20px)';
-        
-        // Animate success message
-        setTimeout(() => {
-            successMessage.style.transition = 'all 0.5s ease';
-            successMessage.style.opacity = '1';
-            successMessage.style.transform = 'translateY(0)';
-        }, 100);
-        
-        // Hide success message after 5 seconds and show form again
-        setTimeout(() => {
-            successMessage.style.opacity = '0';
-            successMessage.style.transform = 'translateY(20px)';
-            
-            setTimeout(() => {
-                successMessage.style.display = 'none';
-                form.style.display = 'block';
-            }, 500);
-        }, 5000);
-    }
-}
-
-// Fallback email function using mailto link
-function sendEmailViaMailto(data) {
-    const subject = encodeURIComponent(`New Testimonial from ${data.name}`);
-    const body = encodeURIComponent(
-        `Name: ${data.name}\n` +
-        `Email: ${data.email}\n` +
-        `Company/Role: ${data.company || 'Not provided'}\n` +
-        `Rating: ${data.rating} stars\n` +
-        `Testimonial: ${data.testimonial}\n` +
-        `Permission to display: ${data.permission}`
-    );
-    
-    const mailtoLink = `mailto:vedantwaghwagh@gmail.com?subject=${subject}&body=${body}`;
-    window.open(mailtoLink, '_blank');
-    
-    // Show success message
-    showSuccessMessage();
-    
-    // Reset form
-    document.getElementById('feedbackForm').reset();
-    resetStarRating();
-}
-
 // ============================================================
-// SMOOTH SCROLLING ENHANCEMENT FOR TESTIMONIALS
+// PARTICLE CANVAS ANIMATION
 // ============================================================
-function enhanceTestimonialScrolling() {
-    const carouselTrack = document.querySelector('.carousel-track');
-    if (!carouselTrack) return;
-
-    let isScrolling = false;
-    let startX = 0;
-    let scrollLeft = 0;
-    let velocity = 0;
-    let animationFrame = null;
-
-    // Smooth momentum scrolling for touch devices
-    function startMomentumScroll(currentVelocity) {
-        if (Math.abs(currentVelocity) < 0.5) return;
-
-        function animate() {
-            velocity *= 0.95; // Friction
-            carouselTrack.scrollLeft += velocity;
-
-            if (Math.abs(velocity) > 0.5) {
-                animationFrame = requestAnimationFrame(animate);
-            } else {
-                snapToNearestCard();
-            }
-        }
-
-        animate();
-    }
-
-    // Snap to nearest card after scrolling
-    function snapToNearestCard() {
-        const cards = Array.from(carouselTrack.children);
-        const trackRect = carouselTrack.getBoundingClientRect();
-        const trackCenter = trackRect.left + trackRect.width / 2;
-
-        let closestCard = null;
-        let closestDistance = Infinity;
-
-        cards.forEach(card => {
-            const cardRect = card.getBoundingClientRect();
-            const cardCenter = cardRect.left + cardRect.width / 2;
-            const distance = Math.abs(trackCenter - cardCenter);
-
-            if (distance < closestDistance) {
-                closestDistance = distance;
-                closestCard = card;
-            }
-        });
-
-        if (closestCard) {
-            const cardOffset = closestCard.offsetLeft;
-            carouselTrack.scrollTo({
-                left: cardOffset - (carouselTrack.offsetWidth - closestCard.offsetWidth) / 2,
-                behavior: 'smooth'
-            });
-        }
-    }
-
-    // Touch events for mobile
-    carouselTrack.addEventListener('touchstart', (e) => {
-        isScrolling = true;
-        startX = e.touches[0].pageX - carouselTrack.offsetLeft;
-        scrollLeft = carouselTrack.scrollLeft;
-        velocity = 0;
-        if (animationFrame) {
-            cancelAnimationFrame(animationFrame);
-        }
-    });
-
-    carouselTrack.addEventListener('touchmove', (e) => {
-        if (!isScrolling) return;
-        e.preventDefault();
-        const x = e.touches[0].pageX - carouselTrack.offsetLeft;
-        const walk = (x - startX) * 1.5; // Increase sensitivity
-        const newScrollLeft = scrollLeft - walk;
-        
-        // Calculate velocity for momentum
-        velocity = newScrollLeft - carouselTrack.scrollLeft;
-        carouselTrack.scrollLeft = newScrollLeft;
-    });
-
-    carouselTrack.addEventListener('touchend', () => {
-        isScrolling = false;
-        startMomentumScroll(velocity);
-    });
-
-    // Mouse events for desktop
-    let isMouseDown = false;
-    carouselTrack.addEventListener('mousedown', (e) => {
-        isMouseDown = true;
-        startX = e.pageX - carouselTrack.offsetLeft;
-        scrollLeft = carouselTrack.scrollLeft;
-        carouselTrack.style.cursor = 'grabbing';
-    });
-
-    carouselTrack.addEventListener('mouseleave', () => {
-        isMouseDown = false;
-        carouselTrack.style.cursor = 'grab';
-    });
-
-    carouselTrack.addEventListener('mouseup', () => {
-        isMouseDown = false;
-        carouselTrack.style.cursor = 'grab';
-        snapToNearestCard();
-    });
-
-    carouselTrack.addEventListener('mousemove', (e) => {
-        if (!isMouseDown) return;
-        e.preventDefault();
-        const x = e.pageX - carouselTrack.offsetLeft;
-        const walk = (x - startX) * 2; // Smooth scrolling
-        carouselTrack.scrollLeft = scrollLeft - walk;
-    });
-
-    // Scroll wheel smoothness
-    carouselTrack.addEventListener('wheel', (e) => {
-        e.preventDefault();
-        const delta = e.deltaY * 2; // Slower scroll speed
-        carouselTrack.scrollLeft += delta;
-        
-        // Debounced snap
-        clearTimeout(carouselTrack.snapTimeout);
-        carouselTrack.snapTimeout = setTimeout(() => {
-            snapToNearestCard();
-        }, 150);
-    });
-
-    // Set initial cursor
-    carouselTrack.style.cursor = 'grab';
-}
-
-// Reset star rating display
-function resetStarRating() {
-    const stars = document.querySelectorAll('.star-rating-input .star');
-    const ratingValue = document.getElementById('ratingValue');
-    
-    stars.forEach(star => star.classList.remove('active'));
-    if (ratingValue) ratingValue.value = '0';
-}
-
-// Initialize smooth scrolling when DOM is ready
 document.addEventListener('DOMContentLoaded', function() {
-    enhanceTestimonialScrolling();
-    initParticleAnimation();
-    initMobileNavigation();
-});
-
-// ============================================================
-// MOBILE NAVIGATION FUNCTIONALITY
-// ============================================================
-function initMobileNavigation() {
-    const hamburgerBtn = document.getElementById('hamburgerBtn');
-    const mobileNav = document.getElementById('mobileNav');
-    const navOverlay = document.getElementById('navOverlay');
-    const navLinks = document.querySelectorAll('.nav-link');
-    const navHeader = document.querySelector('.nav-header');
-
-    if (!hamburgerBtn || !mobileNav || !navOverlay) return;
-
-    // Scroll-based hide/show functionality
-    let lastScrollTop = 0;
-    let scrollThreshold = 100; // Hide after scrolling 100px down
-    let isScrolling = false;
-
-    function handleScroll() {
-        if (!isScrolling) {
-            window.requestAnimationFrame(() => {
-                const currentScrollTop = window.pageYOffset || document.documentElement.scrollTop;
-                
-                if (currentScrollTop > scrollThreshold) {
-                    if (currentScrollTop > lastScrollTop) {
-                        // Scrolling down - hide navigation
-                        navHeader.classList.add('hidden');
-                        navHeader.classList.remove('visible');
-                    } else {
-                        // Scrolling up - show navigation
-                        navHeader.classList.add('visible');
-                        navHeader.classList.remove('hidden');
-                    }
-                } else {
-                    // At top - always show navigation
-                    navHeader.classList.add('visible');
-                    navHeader.classList.remove('hidden');
-                }
-                
-                lastScrollTop = currentScrollTop <= 0 ? 0 : currentScrollTop;
-                isScrolling = false;
-            });
-            isScrolling = true;
-        }
-    }
-
-    // Add scroll event listener
-    window.addEventListener('scroll', handleScroll, { passive: true });
-
-    // Toggle mobile menu
-    function toggleMobileMenu() {
-        const isOpen = mobileNav.classList.contains('active');
-        
-        if (isOpen) {
-            // Close menu
-            mobileNav.classList.remove('active');
-            navOverlay.classList.remove('active');
-            hamburgerBtn.classList.remove('active');
-            document.body.style.overflow = ''; // Restore scrolling
-        } else {
-            // Open menu
-            mobileNav.classList.add('active');
-            navOverlay.classList.add('active');
-            hamburgerBtn.classList.add('active');
-            document.body.style.overflow = 'hidden'; // Prevent scrolling
-        }
-    }
-
-    // Event listeners
-    hamburgerBtn.addEventListener('click', toggleMobileMenu);
-    navOverlay.addEventListener('click', toggleMobileMenu);
-
-    // Close menu when clicking on nav links
-    navLinks.forEach(link => {
-        link.addEventListener('click', () => {
-            mobileNav.classList.remove('active');
-            navOverlay.classList.remove('active');
-            hamburgerBtn.classList.remove('active');
-            document.body.style.overflow = ''; // Restore scrolling
-        });
-    });
-
-    // Close menu on Escape key
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && mobileNav.classList.contains('active')) {
-            toggleMobileMenu();
-        }
-    });
-
-    // Close menu on window resize (if screen becomes larger)
-    let resizeTimer;
-    window.addEventListener('resize', () => {
-        clearTimeout(resizeTimer);
-        resizeTimer = setTimeout(() => {
-            if (window.innerWidth > 768 && mobileNav.classList.contains('active')) {
-                toggleMobileMenu();
-            }
-        }, 250);
-    });
-
-    // Initialize navigation state
-    handleScroll();
-}
-
-// ============================================================
-// PARTICLE ANIMATION SYSTEM
-// ============================================================
-function initParticleAnimation() {
     const canvas = document.getElementById('particle-canvas');
     if (!canvas) return;
-
+    
     const ctx = canvas.getContext('2d');
     let particles = [];
-    let mouseX = 0;
-    let mouseY = 0;
-
+    
     // Set canvas size
     function resizeCanvas() {
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
     }
+    
     resizeCanvas();
     window.addEventListener('resize', resizeCanvas);
-
+    
     // Particle class
     class Particle {
         constructor() {
-            this.reset();
-            this.y = Math.random() * canvas.height;
-        }
-
-        reset() {
             this.x = Math.random() * canvas.width;
-            this.y = canvas.height + 10;
-            this.size = Math.random() * 3 + 1;
-            this.speedY = Math.random() * 0.5 + 0.3; // Much slower upward speed (0.3-0.8)
-            this.speedX = (Math.random() - 0.5) * 0.1; // Slower horizontal drift (0.1 max)
-            this.opacity = Math.random() * 0.5 + 0.3;
-            this.hue = Math.random() * 60 + 240; // Purple to blue range
+            this.y = Math.random() * canvas.height;
+            this.size = Math.random() * 2 + 1;
+            this.speedX = Math.random() * 2 - 1;
+            this.speedY = Math.random() * 2 - 1;
+            this.opacity = Math.random() * 0.5 + 0.2;
         }
-
+        
         update() {
-            this.y -= this.speedY;
             this.x += this.speedX;
-
-            // Mouse interaction
-            const dx = this.x - mouseX;
-            const dy = this.y - mouseY;
-            const distance = Math.sqrt(dx * dx + dy * dy);
+            this.y += this.speedY;
             
-            if (distance < 100) {
-                const force = (100 - distance) / 100;
-                this.x += dx * force * 0.01; // Reduced force for gentler interaction
-                this.y += dy * force * 0.01;
-            }
-
-            // Reset particle if it goes off screen
-            if (this.y < -10 || this.x < -10 || this.x > canvas.width + 10) {
-                this.reset();
-            }
+            // Wrap around edges
+            if (this.x > canvas.width) this.x = 0;
+            if (this.x < 0) this.x = canvas.width;
+            if (this.y > canvas.height) this.y = 0;
+            if (this.y < 0) this.y = canvas.height;
         }
-
+        
         draw() {
-            ctx.save();
-            ctx.globalAlpha = this.opacity;
-            ctx.fillStyle = `hsl(${this.hue}, 70%, 60%)`;
-            ctx.shadowBlur = 10;
-            ctx.shadowColor = `hsl(${this.hue}, 70%, 60%)`;
+            ctx.fillStyle = `rgba(127, 0, 255, ${this.opacity})`;
             ctx.beginPath();
             ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
             ctx.fill();
-            ctx.restore();
         }
     }
-
+    
     // Create particles
     for (let i = 0; i < 50; i++) {
         particles.push(new Particle());
     }
-
-    // Mouse move listener
-    window.addEventListener('mousemove', (e) => {
-        mouseX = e.clientX;
-        mouseY = e.clientY;
-    });
-
+    
     // Animation loop
     function animate() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-
+        
         particles.forEach(particle => {
             particle.update();
             particle.draw();
         });
-
+        
         requestAnimationFrame(animate);
     }
-
+    
     animate();
-}
+});
+
+// ============================================================
+// EMAIL FUNCTIONALITY FOR TESTIMONIAL FORM
+// ============================================================
+// Initialize EmailJS
+(function() {
+    emailjs.init("YOUR_PUBLIC_KEY"); // Replace with your EmailJS public key
+})();
+
+// Handle testimonial form submission
+document.addEventListener('DOMContentLoaded', function() {
+    const feedbackForm = document.getElementById('feedbackForm');
+    
+    if (feedbackForm) {
+        feedbackForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Get form data
+            const formData = new FormData(feedbackForm);
+            const testimonialData = {
+                name: formData.get('name'),
+                email: formData.get('email'),
+                company: formData.get('company'),
+                rating: formData.get('rating'),
+                testimonial: formData.get('testimonial'),
+                permission: formData.get('permission') ? 'Yes' : 'No'
+            };
+            
+            // Send email using EmailJS
+            emailjs.send('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', testimonialData)
+                .then(function(response) {
+                    console.log('SUCCESS!', response.status, response.text);
+                    showNotification('Thank you for your testimonial! It has been sent successfully.', 'success');
+                    feedbackForm.reset();
+                }, function(error) {
+                    console.log('FAILED...', error);
+                    showNotification('Sorry, there was an error sending your testimonial. Please try again.', 'error');
+                });
+        });
+    }
+});
+
+// ============================================================
+// PARTICLE CANVAS ANIMATION
+// ============================================================
+document.addEventListener('DOMContentLoaded', function() {
+    const canvas = document.getElementById('particle-canvas');
+    if (!canvas) return;
+    
+    const ctx = canvas.getContext('2d');
+    let particles = [];
+    
+    // Set canvas size
+    function resizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+    
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+    
+    // Particle class
+    class Particle {
+        constructor() {
+            this.x = Math.random() * canvas.width;
+            this.y = Math.random() * canvas.height;
+            this.size = Math.random() * 2 + 1;
+            this.speedX = Math.random() * 2 - 1;
+            this.speedY = Math.random() * 2 - 1;
+            this.opacity = Math.random() * 0.5 + 0.2;
+        }
+        
+        update() {
+            this.x += this.speedX;
+            this.y += this.speedY;
+            
+            // Wrap around edges
+            if (this.x > canvas.width) this.x = 0;
+            if (this.x < 0) this.x = canvas.width;
+            if (this.y > canvas.height) this.y = 0;
+            if (this.y < 0) this.y = canvas.height;
+        }
+        
+        draw() {
+            ctx.fillStyle = `rgba(127, 0, 255, ${this.opacity})`;
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+            ctx.fill();
+        }
+    }
+    
+    // Create particles
+    for (let i = 0; i < 50; i++) {
+        particles.push(new Particle());
+    }
+    
+    // Animation loop
+    function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        
+        particles.forEach(particle => {
+            particle.update();
+            particle.draw();
+        });
+        
+        requestAnimationFrame(animate);
+    }
+    
+    animate();
+});

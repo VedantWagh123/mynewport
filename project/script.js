@@ -1,37 +1,50 @@
-// ============================================================
+ // ============================================================
 // MOBILE NAVIGATION FUNCTIONALITY
+// Handles hamburger menu, mobile navigation, scroll-based header hiding
 // ============================================================
 function initMobileNavigation() {
-    const hamburgerBtn = document.getElementById('hamburgerBtn');
-    const mobileNav = document.getElementById('mobileNav');
-    const navOverlay = document.getElementById('navOverlay');
-    const navLinks = document.querySelectorAll('.nav-link');
-    const navHeader = document.querySelector('.nav-header');
+    // Get DOM elements for mobile navigation
+    const hamburgerBtn = document.getElementById('hamburgerBtn'); // Hamburger menu button
+    const mobileNav = document.getElementById('mobileNav'); // Mobile navigation menu
+    const navOverlay = document.getElementById('navOverlay'); // Dark overlay when menu is open
+    const navLinks = document.querySelectorAll('.nav-link'); // All navigation links
+    const navHeader = document.querySelector('.nav-header'); // Main navigation header
 
+    // Exit if essential elements don't exist
     if (!hamburgerBtn || !mobileNav || !navOverlay) return;
 
-    let lastScrollTop = 0;
-    let scrollThreshold = 100;
-    let isScrolling = false;
+    // Variables for scroll tracking
+    let lastScrollTop = 0; // Previous scroll position
+    let scrollThreshold = 100; // Minimum scroll before header starts hiding
+    let isScrolling = false; // Prevent multiple scroll handlers at once
 
+    // Handle scroll events to show/hide header based on scroll direction
     function handleScroll() {
+        // Use requestAnimationFrame for smooth performance
         if (!isScrolling) {
             window.requestAnimationFrame(() => {
+                // Get current scroll position (cross-browser compatible)
                 const currentScrollTop = window.pageYOffset || document.documentElement.scrollTop;
                 
+                // Only apply scroll behavior after threshold is passed
                 if (currentScrollTop > scrollThreshold) {
+                    // Scrolling DOWN - hide the header
                     if (currentScrollTop > lastScrollTop) {
                         navHeader.classList.add('hidden');
                         navHeader.classList.remove('visible');
-                    } else {
+                    } 
+                    // Scrolling UP - show the header
+                    else {
                         navHeader.classList.add('visible');
                         navHeader.classList.remove('hidden');
                     }
                 } else {
+                    // Always show header when near top of page
                     navHeader.classList.add('visible');
                     navHeader.classList.remove('hidden');
                 }
                 
+                // Update last scroll position (prevent negative values)
                 lastScrollTop = currentScrollTop <= 0 ? 0 : currentScrollTop;
                 isScrolling = false;
             });
@@ -39,59 +52,72 @@ function initMobileNavigation() {
         }
     }
 
+    // Add scroll event listener with passive option for better performance
     window.addEventListener('scroll', handleScroll, { passive: true });
 
+    // Toggle mobile menu open/closed state
     function toggleMobileMenu() {
+        // Check if menu is currently open
         const isOpen = mobileNav.classList.contains('active');
         
         if (isOpen) {
+            // CLOSE the menu - remove all active classes and restore body scroll
             mobileNav.classList.remove('active');
             navOverlay.classList.remove('active');
             hamburgerBtn.classList.remove('active');
-            document.body.style.overflow = '';
+            document.body.style.overflow = ''; // Restore body scrolling
         } else {
+            // OPEN the menu - add active classes and prevent body scroll
             mobileNav.classList.add('active');
             navOverlay.classList.add('active');
             hamburgerBtn.classList.add('active');
-            document.body.style.overflow = 'hidden';
+            document.body.style.overflow = 'hidden'; // Prevent body scrolling
         }
     }
 
-    hamburgerBtn.addEventListener('click', toggleMobileMenu);
-    navOverlay.addEventListener('click', toggleMobileMenu);
+    // Event listeners for menu toggle
+    hamburgerBtn.addEventListener('click', toggleMobileMenu); // Click hamburger button
+    navOverlay.addEventListener('click', toggleMobileMenu); // Click overlay to close
 
+    // Close mobile menu when any navigation link is clicked
     navLinks.forEach(link => {
         link.addEventListener('click', () => {
             mobileNav.classList.remove('active');
             navOverlay.classList.remove('active');
             hamburgerBtn.classList.remove('active');
-            document.body.style.overflow = '';
+            document.body.style.overflow = ''; // Restore body scrolling
         });
     });
 
+    // Close mobile menu when Escape key is pressed
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape' && mobileNav.classList.contains('active')) {
             toggleMobileMenu();
         }
     });
 
+    // Handle window resize - close mobile menu if switching to desktop
     let resizeTimer;
     window.addEventListener('resize', () => {
-        clearTimeout(resizeTimer);
+        clearTimeout(resizeTimer); // Clear previous timer
         resizeTimer = setTimeout(() => {
+            // If window is desktop-sized and mobile menu is open, close it
             if (window.innerWidth > 768 && mobileNav.classList.contains('active')) {
                 toggleMobileMenu();
             }
-        }, 250);
+        }, 250); // Wait 250ms after resize stops
     });
 
+    // Initialize scroll state on page load
     handleScroll();
 }
 
-// Initialize mobile navigation
+// Initialize mobile navigation when DOM is ready
 document.addEventListener('DOMContentLoaded', function() {
     initMobileNavigation();
 });
+// ============================================================
+// PROJECTS SHOWCASE INTERACTIVE FUNCTIONALITY
 // This file contains all interactive functionality for the projects showcase section including:
 // - Custom cursor with smooth animations and click effects
 // - Project filtering and grid management
@@ -103,170 +129,241 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // ============================================================
 // CUSTOM CURSOR SYSTEM
+// Creates a custom animated cursor that follows mouse movement
+// Only active on desktop devices (not mobile/tablet)
 // ============================================================
 
-// Global cursor variables for tracking and animation
-let cursor = null;
-let cursorOutline = null;
-let mouseX = 0;
-let mouseY = 0;
-let outlineX = 0;
-let outlineY = 0;
-let isAnimating = false;
+// Global cursor variables for tracking and animation state
+let cursor = null; // Main cursor element
+let cursorOutline = null; // Cursor outline/trail element
+let mouseX = 0; // Current mouse X position
+let mouseY = 0; // Current mouse Y position
+let outlineX = 0; // Current outline X position (for smooth following)
+let outlineY = 0; // Current outline Y position (for smooth following)
+let isAnimating = false; // Prevent multiple animation loops
 
 // Track mouse position - optimized for performance
+// Updates global mouse coordinates on every mouse movement
 function handleMouseMove(e) {
-  mouseX = e.clientX;
-  mouseY = e.clientY;
+  mouseX = e.clientX; // Horizontal mouse position
+  mouseY = e.clientY; // Vertical mouse position
   
-  // Only animate if not already animating to prevent performance issues
+  // Only set animation flag if not already animating to prevent performance issues
   if (!isAnimating) {
     isAnimating = true;
   }
 }
 
 // Mouse down effect - cursor scales down when clicking
+// Adds visual feedback for user interactions
 function handleMouseDown() {
-  cursor?.classList.add('click');
+  cursor?.classList.add('click'); // Add 'click' class for scale animation
 }
 
 // Mouse up effect - cursor returns to normal size
+// Removes the click effect when mouse button is released
 function handleMouseUp() {
-  cursor?.classList.remove('click');
+  cursor?.classList.remove('click'); // Remove 'click' class
 }
 
-// Optimized cursor animation - minimal reflows
+// Optimized cursor animation loop using requestAnimationFrame
+// Creates smooth trailing effect for cursor outline
 function animateCursor() {
+  // Calculate distance between mouse and outline position
   const dx = mouseX - outlineX;
   const dy = mouseY - outlineY;
   
-  // Faster follow speed
+  // Move outline towards mouse position with easing (25% speed)
+  // This creates a smooth trailing effect
   outlineX += dx * 0.25;
   outlineY += dy * 0.25;
 
+  // Update main cursor position to follow mouse exactly
   if (cursor && isAnimating) {
     cursor.style.transform = `translate(${mouseX}px, ${mouseY}px)`;
   }
 
+  // Continue animation loop
   requestAnimationFrame(animateCursor);
 }
 
-// Initialize cursor with performance optimization
+// Initialize custom cursor with performance optimizations
+// Sets up all cursor functionality and event listeners
 function initCustomCursor() {
   cursor = document.getElementById('customCursor');
-  if (!cursor) return;
+  if (!cursor) return; // Exit if cursor element doesn't exist
 
   cursorOutline = cursor.querySelector('.cursor-outline');
 
-  // Only on desktop (not mobile)
+  // Only enable custom cursor on desktop devices (hover capability)
+  // This prevents cursor issues on touch devices
   if (window.matchMedia('(hover: hover)').matches) {
+    // Add event listeners for mouse tracking and interactions
     document.addEventListener('mousemove', handleMouseMove);
     document.addEventListener('mousedown', handleMouseDown);
     document.addEventListener('mouseup', handleMouseUp);
-    animateCursor();
+    animateCursor(); // Start animation loop
 
-    // Hover effects on project cards
-    const projectCards = document.querySelectorAll('.project-card.advanced-card');
-    projectCards.forEach((card) => {
+    // Add hover effects on project cards
+    // Cursor changes appearance when hovering over project cards
+    document.querySelectorAll('.featured-project-card').forEach(card => {
       card.addEventListener('mouseenter', () => {
-        cursor?.classList.add('hover');
+        cursor?.classList.add('featured-hover'); // Add featured hover state
       });
       card.addEventListener('mouseleave', () => {
-        cursor?.classList.remove('hover');
+        cursor?.classList.remove('featured-hover'); // Remove featured hover state
       });
     });
 
-    // Hover effects on footer theory boxes
-    const theoryBoxes = document.querySelectorAll('.theory-box');
-    theoryBoxes.forEach((box) => {
+    // Master feature cards cursor effects
+    document.querySelectorAll('.feature-card.master-card').forEach(card => {
+      card.addEventListener('mouseenter', () => {
+        cursor?.classList.add('master-hover'); // Add master hover state
+      });
+      card.addEventListener('mouseleave', () => {
+        cursor?.classList.remove('master-hover'); // Remove master hover state
+      });
+    });
+
+    document.querySelectorAll('.project-card.advanced-card').forEach(card => {
+      card.addEventListener('mouseenter', () => {
+        cursor?.classList.add('hover'); // Add hover state to cursor
+      });
+      card.addEventListener('mouseleave', () => {
+        cursor?.classList.remove('hover'); // Remove hover state
+      });
+    });
+
+    // Different cursor style for footer interactive elements
+    document.querySelectorAll('.theory-box').forEach(box => {
       box.addEventListener('mouseenter', () => {
-        cursor?.classList.add('footer-hover');
+        cursor?.classList.add('footer-hover'); // Add footer hover state
       });
       box.addEventListener('mouseleave', () => {
-        cursor?.classList.remove('footer-hover');
+        cursor?.classList.remove('footer-hover'); // Remove footer hover state
       });
     });
 
-    // Hover effects on footer nav links
-    const footerLinks = document.querySelectorAll('.footer-nav-link');
-    footerLinks.forEach((link) => {
+    // Enhanced cursor effects for project links
+    document.querySelectorAll('.project-link, .feature-link').forEach(link => {
       link.addEventListener('mouseenter', () => {
-        cursor?.classList.add('hover');
+        cursor?.classList.add('link-hover'); // Add link hover state
       });
       link.addEventListener('mouseleave', () => {
-        cursor?.classList.remove('hover');
+        cursor?.classList.remove('link-hover'); // Remove hover effect
       });
     });
 
-    // Hover effects on social links
-    const socialLinks = document.querySelectorAll('.social-link');
-    socialLinks.forEach((link) => {
+    // Tech badges hover effect
+    document.querySelectorAll('.tech-badge').forEach(badge => {
+      badge.addEventListener('mouseenter', () => {
+        cursor?.classList.add('badge-hover'); // Add badge hover state
+      });
+      badge.addEventListener('mouseleave', () => {
+        cursor?.classList.remove('badge-hover'); // Remove hover effect
+      });
+    });
+
+    // Standard hover effects for other interactive elements
+    document.querySelectorAll('a, button, .card-link').forEach(element => {
+      element.addEventListener('mouseenter', () => {
+        cursor?.classList.add('hover'); // Standard hover effect
+      });
+      element.addEventListener('mouseleave', () => {
+        cursor?.classList.remove('hover'); // Remove hover effect
+      });
+    });
+
+    // Footer hover effect for social links
+    document.querySelectorAll('.social-link').forEach(link => {
       link.addEventListener('mouseenter', () => {
-        cursor?.classList.add('footer-hover');
+        cursor?.classList.add('footer-hover'); // Footer hover effect for social links
       });
       link.addEventListener('mouseleave', () => {
-        cursor?.classList.remove('footer-hover');
+        cursor?.classList.remove('footer-hover'); // Remove hover effect
       });
     });
   } else {
-    // Hide cursor on mobile
+    // Hide custom cursor on mobile/tablet devices
+    // Prevents conflicts with native touch cursors
     if (cursor) cursor.style.display = 'none';
   }
 }
 
-// Fast image loading optimization
+// ============================================================
+// IMAGE LOADING OPTIMIZATION
+// Improves perceived performance by handling image loading states
+// ============================================================
+
+// Fast image loading optimization with fade-in effects
+// Adds 'loaded' class to images when they finish loading
 function initImageLoading() {
-  const images = document.querySelectorAll('.card-image');
+  const images = document.querySelectorAll('.card-image'); // Get all card images
   
   images.forEach(img => {
+    // Check if image is already loaded (from cache)
     if (img.complete && img.naturalHeight !== 0) {
-      img.classList.add('loaded');
+      img.classList.add('loaded'); // Add loaded class immediately
     } else {
+      // Add loaded class when image finishes loading
       img.addEventListener('load', () => {
-        img.classList.add('loaded');
-      }, { once: true });
+        img.classList.add('loaded'); // Trigger fade-in animation
+      }, { once: true }); // Remove listener after first trigger
     }
   });
 }
 
-// Hide/Show Navigation on Scroll
-function initScrollNavigation() {
-  const nav = document.querySelector('.main-nav');
-  if (!nav) return;
+// ============================================================
+// SCROLL-BASED NAVIGATION HIDING
+// Automatically hides/shows navigation based on scroll direction
+// Improves screen real estate when browsing content
+// ============================================================
 
-  let lastScrollY = 0;
-  let isNavVisible = true;
+// Hide/Show Navigation on Scroll
+// Creates auto-hiding navigation for better content viewing
+function initScrollNavigation() {
+  const nav = document.querySelector('.main-nav'); // Get main navigation element
+  if (!nav) return; // Exit if navigation doesn't exist
+
+  let lastScrollY = 0; // Previous scroll position
+  let isNavVisible = true; // Current visibility state
 
   window.addEventListener('scroll', () => {
-    const currentScrollY = window.scrollY;
+    const currentScrollY = window.scrollY; // Current scroll position
 
-    // Hide nav when scrolling down
+    // Hide navigation when scrolling DOWN past 100px
     if (currentScrollY > lastScrollY && currentScrollY > 100) {
       if (isNavVisible) {
-        nav.style.transform = 'translateY(-100%)';
-        nav.style.opacity = '0';
-        nav.style.pointerEvents = 'none';
+        // Animate navigation up and out of view
+        nav.style.transform = 'translateY(-100%)'; // Move up
+        nav.style.opacity = '0'; // Fade out
+        nav.style.pointerEvents = 'none'; // Disable interactions
         isNavVisible = false;
       }
     } 
-    // Show nav when scrolling up
+    // Show navigation when scrolling UP
     else if (currentScrollY < lastScrollY) {
       if (!isNavVisible) {
-        nav.style.transform = 'translateY(0)';
-        nav.style.opacity = '1';
-        nav.style.pointerEvents = 'auto';
+        // Animate navigation back into view
+        nav.style.transform = 'translateY(0)'; // Move to original position
+        nav.style.opacity = '1'; // Fade in
+        nav.style.pointerEvents = 'auto'; // Enable interactions
         isNavVisible = true;
       }
     }
 
-    lastScrollY = currentScrollY;
-  }, { passive: true });
+    lastScrollY = currentScrollY; // Update last scroll position
+  }, { passive: true }); // Use passive listener for better performance
 }
 
-// Initialize when page loads
-document.addEventListener("DOMContentLoaded", () => {
-  initCustomCursor();
-  initImageLoading();
-  initScrollNavigation();
-});
+// ============================================================
+// INITIALIZATION
+// Starts all functionality when the page loads
+// ============================================================
 
+// Initialize all interactive features when DOM is fully loaded
+document.addEventListener("DOMContentLoaded", () => {
+  initCustomCursor(); // Start custom cursor system
+  initImageLoading(); // Optimize image loading
+  initScrollNavigation(); // Enable scroll-based navigation
+});
