@@ -1,3 +1,27 @@
+
+// Video Preloader
+window.addEventListener('load', function() {
+    const preloader = document.getElementById('preloader');
+    const video = preloader.querySelector('video');
+    
+    if (video) {
+        // Hide preloader after 4 seconds or when video can play
+        const hidePreloader = () => {
+            preloader.style.opacity = '0';
+            preloader.style.transition = 'opacity 0.5s ease';
+            setTimeout(() => {
+                preloader.style.display = 'none';
+            }, 500);
+        };
+        
+        // Hide after 4 seconds
+        setTimeout(hidePreloader, 4000);
+        
+        // Also hide when video is ready to play
+        video.addEventListener('canplay', hidePreloader, { once: true });
+    }
+});
+
 // Typing Effect
 const roles = ["Web Designer", "Frontend Developer", "Creative Coder"];
 let roleIndex = 0;
