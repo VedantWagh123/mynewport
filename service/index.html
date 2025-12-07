@@ -82,7 +82,7 @@
               </div>
             </div>
             <div class="service-content">
-              <h3 class="service-title">Frontend Development</h3>
+              <h3 class="service-title"><span class="gradient-text">Frontend</span> Development</h3>
               <p class="service-description">
                 Building responsive, interactive, and performant web applications using modern frameworks and cutting-edge technologies.
               </p>
@@ -112,7 +112,7 @@
               </div>
             </div>
             <div class="service-content">
-              <h3 class="service-title">Backend Development</h3>
+              <h3 class="service-title">Backend <span class="gradient-text-alt">Development</span></h3>
               <p class="service-description">
                 Creating robust, scalable server-side solutions with modern architectures and secure API development.
               </p>
@@ -355,17 +355,63 @@
         <div class="footer-right">
           <div class="footer-contact">
             <h4>Get In Touch</h4>
-            <div class="contact-item">
-              <i class="fas fa-envelope"></i>
-              <span>hello@vedant.dev</span>
+            <div class="contact-grid">
+              <div class="contact-item" data-aos="fade-right" data-aos-delay="100">
+                <div class="contact-icon-wrapper">
+                  <i class="fas fa-envelope"></i>
+                  <div class="icon-ripple"></div>
+                </div>
+                <div class="contact-content">
+                  <span class="contact-label">Email</span>
+                  <a href="mailto:vedantwaaghwgah@gmail.com" class="contact-value">vedantwaaghwgah@gmail.com</a>
+                </div>
+              </div>
+              <div class="contact-item" data-aos="fade-right" data-aos-delay="200">
+                <div class="contact-icon-wrapper">
+                  <i class="fas fa-phone"></i>
+                  <div class="icon-ripple"></div>
+                </div>
+                <div class="contact-content">
+                  <span class="contact-label">Phone</span>
+                  <a href="tel:+918766455628" class="contact-value">+91 8766455628</a>
+                </div>
+              </div>
+              <div class="contact-item" data-aos="fade-right" data-aos-delay="300">
+                <div class="contact-icon-wrapper">
+                  <i class="fas fa-map-marker-alt"></i>
+                  <div class="icon-ripple"></div>
+                </div>
+                <div class="contact-content">
+                  <span class="contact-label">Location</span>
+                  <span class="contact-value">Amravati, Maharashtra, India</span>
+                </div>
+              </div>
             </div>
-            <div class="contact-item">
-              <i class="fas fa-phone"></i>
-              <span>+91 98765 43210</span>
-            </div>
-            <div class="contact-item">
-              <i class="fas fa-map-marker-alt"></i>
-              <span>Mumbai, India</span>
+            
+            <!-- Contact Form -->
+            <div class="contact-form-section" data-aos="fade-up" data-aos-delay="400">
+              <h5>Send Quick Message</h5>
+              <form class="contact-form" id="quickContactForm">
+                <div class="form-row">
+                  <div class="form-group">
+                    <input type="text" id="quickName" placeholder="Your Name" required>
+                    <label for="quickName">Name</label>
+                  </div>
+                  <div class="form-group">
+                    <input type="email" id="quickEmail" placeholder="Your Email" required>
+                    <label for="quickEmail">Email</label>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <textarea id="quickMessage" placeholder="Your Message" rows="3" required></textarea>
+                  <label for="quickMessage">Message</label>
+                </div>
+                <button type="submit" class="contact-submit-btn">
+                  <span class="btn-text">Send Message</span>
+                  <i class="fas fa-paper-plane"></i>
+                  <div class="btn-ripple"></div>
+                </button>
+              </form>
             </div>
           </div>
           

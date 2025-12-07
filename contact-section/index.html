@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - Advanced Contact Section</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Particle Effect Background -->
+    <div class="particles-container" id="particlesContainer"></div>
+    
+    <!-- Animated Header Section -->
+    <header class="animated-header">
+        <nav class="navbar">
+            <div class="nav-container">
+                <div class="logo">
+                    <h2 class="logo-text animate-slide-in-left">ContactHub</h2>
+                </div>
+                <ul class="nav-menu">
+                    <li class="nav-item animate-slide-in-right" style="animation-delay: 0.1s;">
+                        <a href="#home" class="nav-link">Home</a>
+                    </li>
+                    <li class="nav-item animate-slide-in-right" style="animation-delay: 0.2s;">
+                        <a href="#about" class="nav-link">About</a>
+                    </li>
+                    <li class="nav-item animate-slide-in-right" style="animation-delay: 0.3s;">
+                        <a href="#services" class="nav-link">Services</a>
+                    </li>
+                    <li class="nav-item animate-slide-in-right" style="animation-delay: 0.4s;">
+                        <a href="#contact" class="nav-link active">Contact</a>
+                    </li>
+                </ul>
+                <div class="hamburger animate-fade-in">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section with Animation -->
+    <section class="hero-section">
+        <div class="hero-content">
+            <h1 class="hero-title animate-slide-in-bottom">Get In Touch</h1>
+            <p class="hero-subtitle animate-slide-in-bottom animate-delay-1">We'd love to hear from you. Send us a message and we'll respond as soon as possible.</p>
+            <div class="hero-buttons animate-slide-in-bottom animate-delay-2">
+                <a href="#contact-form" class="btn-primary">Send Message</a>
+                <a href="#contact-info" class="btn-secondary">Contact Info</a>
+            </div>
+        </div>
+        <div class="hero-background">
+            <div class="floating-shapes">
+                <div class="shape shape-1 animate-float"></div>
+                <div class="shape shape-2 animate-float animate-delay-1"></div>
+                <div class="shape shape-3 animate-float animate-delay-2"></div>
+            </div>
+            <!-- Hero Particles Container -->
+            <div class="hero-particles-container" id="heroParticlesContainer"></div>
+        </div>
+    </section>
+
+    <!-- Main Contact Section -->
+    <main class="contact-main">
+        <div class="container">
+            <!-- Contact Information Cards -->
+            <section id="contact-info" class="contact-info-section">
+                <h2 class="section-title animate-fade-in-up">Contact Information</h2>
+                <div class="contact-cards">
+                    <div class="contact-card animate-scale-up animate-delay-1">
+                        <div class="card-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <h3>Address</h3>
+                        <p>123 Business Street<br>New York, NY 10001<br>United States</p>
+                        <a href="#" class="card-link">Get Directions →</a>
+                    </div>
+                    <div class="contact-card animate-scale-up animate-delay-2">
+                        <div class="card-icon">
+                            <i class="fas fa-phone"></i>
+                        </div>
+                        <h3>Phone</h3>
+                        <p>Main: +1 (555) 123-4567<br>Toll-free: 1-800-COMPANY<br>Fax: +1 (555) 123-4568</p>
+                        <a href="tel:+15551234567" class="card-link">Call Now →</a>
+                    </div>
+                    <div class="contact-card animate-scale-up animate-delay-3">
+                        <div class="card-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <h3>Email</h3>
+                        <p>General: info@company.com<br>Support: support@company.com<br>Sales: sales@company.com</p>
+                        <a href="mailto:info@company.com" class="card-link">Send Email →</a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Contact Form Section -->
+            <section id="contact-form" class="contact-form-section">
+                <div class="form-container">
+                    <div class="form-content animate-fade-in-left">
+                        <h2>Send Us a Message</h2>
+                        <p>Fill out the form below and we'll get back to you within 24 hours.</p>
+                        <form class="contact-form" id="contactForm">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="firstName">First Name *</label>
+                                    <input type="text" id="firstName" name="firstName" required>
+                                    <span class="form-error"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label for="lastName">Last Name *</label>
+                                    <input type="text" id="lastName" name="lastName" required>
+                                    <span class="form-error"></span>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="email">Email Address *</label>
+                                    <input type="email" id="email" name="email" required>
+                                    <span class="form-error"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label for="phone">Phone Number</label>
+                                    <input type="tel" id="phone" name="phone">
+                                    <span class="form-error"></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="subject">Subject *</label>
+                                <select id="subject" name="subject" required>
+                                    <option value="">Select a subject</option>
+                                    <option value="general">General Inquiry</option>
+                                    <option value="support">Technical Support</option>
+                                    <option value="sales">Sales Question</option>
+                                    <option value="feedback">Feedback</option>
+                                    <option value="partnership">Partnership Opportunity</option>
+                                </select>
+                                <span class="form-error"></span>
+                            </div>
+                            <div class="form-group">
+                                <label for="message">Message *</label>
+                                <textarea id="message" name="message" rows="5" required></textarea>
+                                <span class="form-error"></span>
+                            </div>
+                            <div class="form-group checkbox-group">
+                                <input type="checkbox" id="newsletter" name="newsletter">
+                                <label for="newsletter">Subscribe to our newsletter for updates and news</label>
+                            </div>
+                            <button type="submit" class="submit-btn">
+                                <span>Send Message</span>
+                                <i class="fas fa-paper-plane"></i>
+                            </button>
+                        </form>
+                    </div>
+                    <div class="form-image animate-fade-in-right">
+                        <div class="image-container">
+                            <div class="floating-elements">
+                                <div class="float-element element-1"></div>
+                                <div class="float-element element-2"></div>
+                                <div class="float-element element-3"></div>
+                            </div>
+                            <img src="https://images.unsplash.com/photo-1611224923853-80b023f02d71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="Contact Us">
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Map Section -->
+            <section class="map-section">
+                <div class="map-container animate-fade-in-up">
+                    <h2>Find Us Here</h2>
+                    <div class="map-wrapper">
+                        <iframe 
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3024.2219901290355!2d-74.00369368400567!3d40.71312937933039!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c25a316bb8bb3b%3A0x4b5b5c5c5c5c5c5c!2sOne%20World%20Trade%20Center!5e0!3m2!1sen!2sus!4v1234567890"
+                            width="100%" 
+                            height="450" 
+                            style="border:0;" 
+                            allowfullscreen="" 
+                            loading="lazy">
+                        </iframe>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Animated Footer -->
+    <footer class="animated-footer">
+        <div class="footer-content">
+            <div class="footer-section animate-fade-in-up">
+                <h3>About ContactHub</h3>
+                <p>We are dedicated to providing exceptional service and support to our valued customers. Your satisfaction is our priority.</p>
+                <div class="social-links">
+                    <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+            <div class="footer-section animate-fade-in-up animate-delay-1">
+                <h3>Quick Links</h3>
+                <ul class="footer-links">
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#about">About Us</a></li>
+                    <li><a href="#services">Services</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                    <li><a href="#privacy">Privacy Policy</a></li>
+                </ul>
+            </div>
+            <div class="footer-section animate-fade-in-up animate-delay-2">
+                <h3>Contact Info</h3>
+                <ul class="contact-info">
+                    <li><i class="fas fa-map-marker-alt"></i> 123 Business Street, NY 10001</li>
+                    <li><i class="fas fa-phone"></i> +1 (555) 123-4567</li>
+                    <li><i class="fas fa-envelope"></i> info@company.com</li>
+                </ul>
+            </div>
+            <div class="footer-section animate-fade-in-up animate-delay-3">
+                <h3>Newsletter</h3>
+                <p>Subscribe to get updates on our latest offers and news!</p>
+                <form class="newsletter-form">
+                    <input type="email" placeholder="Your email address" required>
+                    <button type="submit">Subscribe</button>
+                </form>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 ContactHub. All rights reserved. | Designed with <i class="fas fa-heart"></i> by Your Team</p>
+        </div>
+    </footer>
+
+    <!-- Success Modal -->
+    <div class="modal" id="successModal">
+        <div class="modal-content animate-scale-in">
+            <div class="modal-icon">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <h3>Message Sent Successfully!</h3>
+            <p>Thank you for contacting us. We'll get back to you within 24 hours.</p>
+            <button class="modal-close" onclick="closeModal()">OK</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

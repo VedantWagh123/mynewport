@@ -596,6 +596,225 @@ document.addEventListener('DOMContentLoaded', () => {
   initFooterSmoothScroll();
   initFooterSocialEffects();
   updateFooterYear();
+  initQuickContactForm();
+});
+
+// ============================================================
+// QUICK CONTACT FORM FUNCTIONALITY
+// ============================================================
+
+// Quick Contact Form Handler
+function initQuickContactForm() {
+  const quickContactForm = document.getElementById('quickContactForm');
+  
+  if (quickContactForm) {
+    quickContactForm.addEventListener('submit', handleQuickContactSubmit);
+  }
+  
+  // Add form field animations
+  initFormAnimations();
+}
+
+// Handle Quick Contact Submit
+async function handleQuickContactSubmit(e) {
+  e.preventDefault();
+  
+  const form = e.target;
+  const nameInput = form.querySelector('#quickName');
+  const emailInput = form.querySelector('#quickEmail');
+  const messageInput = form.querySelector('#quickMessage');
+  const submitBtn = form.querySelector('.contact-submit-btn');
+  
+  // Validate form
+  const name = nameInput.value.trim();
+  const email = emailInput.value.trim();
+  const message = messageInput.value.trim();
+  
+  if (!name || !email || !message) {
+    showNotificationToast('Validation Error', 'Please fill in all required fields.');
+    return;
+  }
+  
+  // Validate email
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(email)) {
+    showNotificationToast('Invalid Email', 'Please enter a valid email address.');
+    return;
+  }
+  
+  // Show loading state
+  const originalBtnText = submitBtn.querySelector('.btn-text').textContent;
+  const originalBtnIcon = submitBtn.querySelector('i').className;
+  submitBtn.querySelector('.btn-text').textContent = 'Sending...';
+  submitBtn.querySelector('i').className = 'fas fa-spinner fa-spin';
+  submitBtn.disabled = true;
+  
+  try {
+    // Simulate API call
+    await simulateApiCall(email);
+    
+    // Show success message
+    showContactSuccess(form);
+    showNotificationToast('Message Sent!', 'Thank you for contacting us. We\'ll get back to you soon!');
+    
+    // Store message in localStorage (for demo purposes)
+    const messages = JSON.parse(localStorage.getItem('contactMessages') || '[]');
+    messages.push({
+      name,
+      email,
+      message,
+      timestamp: new Date().toISOString()
+    });
+    localStorage.setItem('contactMessages', JSON.stringify(messages));
+    
+    // Reset form after delay
+    setTimeout(() => {
+      form.reset();
+      resetContactForm(form);
+    }, 3000);
+    
+  } catch (error) {
+    showNotificationToast('Error', 'Failed to send message. Please try again.');
+    resetContactForm(form);
+  }
+}
+
+// Show Contact Success
+function showContactSuccess(form) {
+  const successMessage = document.createElement('div');
+  successMessage.className = 'contact-form-success show';
+  successMessage.innerHTML = `
+    <i class="fas fa-check-circle"></i>
+    <p>Message sent successfully!</p>
+  `;
+  
+  // Replace form with success message
+  form.style.display = 'none';
+  form.parentNode.appendChild(successMessage);
+}
+
+// Reset Contact Form
+function resetContactForm(form) {
+  const submitBtn = form.querySelector('.contact-submit-btn');
+  submitBtn.querySelector('.btn-text').textContent = 'Send Message';
+  submitBtn.querySelector('i').className = 'fas fa-paper-plane';
+  submitBtn.disabled = false;
+  
+  // Remove success message if exists
+  const successMessage = form.parentNode.querySelector('.contact-form-success');
+  if (successMessage) {
+    successMessage.remove();
+  }
+  
+  form.style.display = 'flex';
+}
+
+// Form Field Animations
+function initFormAnimations() {
+  const formInputs = document.querySelectorAll('.contact-form input, .contact-form textarea');
+  
+  formInputs.forEach(input => {
+    // Add focus animations
+    input.addEventListener('focus', () => {
+      input.parentElement.classList.add('focused');
+    });
+    
+    input.addEventListener('blur', () => {
+      if (!input.value) {
+        input.parentElement.classList.remove('focused');
+      }
+    });
+    
+    // Add typing animation
+    input.addEventListener('input', () => {
+      const label = input.nextElementSibling;
+      if (label && label.tagName === 'LABEL') {
+        label.style.color = 'var(--accent-secondary)';
+        setTimeout(() => {
+          label.style.color = '';
+        }, 300);
+      }
+    });
+  });
+  
+  // Add button ripple effect
+  const submitBtn = document.querySelector('.contact-submit-btn');
+  if (submitBtn) {
+    submitBtn.addEventListener('click', function(e) {
+      const ripple = this.querySelector('.btn-ripple');
+      const rect = this.getBoundingClientRect();
+      const size = Math.max(rect.width, rect.height);
+      const x = e.clientX - rect.left - size / 2;
+      const y = e.clientY - rect.top - size / 2;
+      
+      ripple.style.width = ripple.style.height = size + 'px';
+      ripple.style.left = x + 'px';
+      ripple.style.top = y + 'px';
+    });
+  }
+}
+
+// Enhanced Contact Item Interactions
+function initContactItemInteractions() {
+  const contactItems = document.querySelectorAll('.contact-item');
+  
+  contactItems.forEach(item => {
+    // Add magnetic effect on hover
+    item.addEventListener('mousemove', (e) => {
+      const rect = item.getBoundingClientRect();
+      const x = e.clientX - rect.left - rect.width / 2;
+      const y = e.clientY - rect.top - rect.height / 2;
+      
+      const moveX = x * 0.15;
+      const moveY = y * 0.15;
+      
+      item.style.transform = `translateX(${8 + moveX}px) translateY(${moveY}px)`;
+    });
+    
+    item.addEventListener('mouseleave', () => {
+      item.style.transform = '';
+    });
+    
+    // Add click feedback
+    item.addEventListener('click', () => {
+      item.style.transition = 'transform 0.1s ease';
+      item.style.transform = 'translateX(12px) scale(0.98)';
+      
+      setTimeout(() => {
+        item.style.transform = '';
+        item.style.transition = '';
+      }, 100);
+    });
+  });
+}
+
+// Contact Icon Pulse Effects
+function initContactIconPulse() {
+  const iconWrappers = document.querySelectorAll('.contact-icon-wrapper');
+  
+  iconWrappers.forEach((wrapper, index) => {
+    // Add staggered pulse animations
+    setTimeout(() => {
+      wrapper.classList.add('pulse-active');
+    }, index * 200);
+    
+    // Enhanced hover effects
+    wrapper.addEventListener('mouseenter', () => {
+      const icon = wrapper.querySelector('i');
+      icon.style.transform = 'scale(1.2) rotate(10deg)';
+    });
+    
+    wrapper.addEventListener('mouseleave', () => {
+      const icon = wrapper.querySelector('i');
+      icon.style.transform = '';
+    });
+  });
+}
+
+// Initialize all contact enhancements
+document.addEventListener('DOMContentLoaded', () => {
+  initContactItemInteractions();
+  initContactIconPulse();
 });
 
 // ============================================================

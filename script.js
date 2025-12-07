@@ -770,3 +770,349 @@ function initSocialPopup() {
     }
   });
 }
+
+// ============================================================
+// CONTACT SECTION FUNCTIONALITY
+// ============================================================
+
+// Initialize Contact Form
+document.addEventListener('DOMContentLoaded', () => {
+  initMainContactForm();
+  initContactItemInteractions();
+  initContactIconPulse();
+  initFormAnimations();
+  updateFooterYear();
+});
+
+// Main Contact Form Handler
+function initMainContactForm() {
+  const mainContactForm = document.getElementById('mainContactForm');
+  
+  if (mainContactForm) {
+    mainContactForm.addEventListener('submit', handleMainContactSubmit);
+  }
+}
+
+// Handle Main Contact Submit
+async function handleMainContactSubmit(e) {
+  e.preventDefault();
+  
+  const form = e.target;
+  const nameInput = form.querySelector('#contactName');
+  const emailInput = form.querySelector('#contactEmail');
+  const phoneInput = form.querySelector('#contactPhone');
+  const messageInput = form.querySelector('#contactMessage');
+  const submitBtn = form.querySelector('.contact-submit-btn');
+  
+  // Validate form
+  const name = nameInput.value.trim();
+  const email = emailInput.value.trim();
+  const message = messageInput.value.trim();
+  
+  if (!name || !email || !message) {
+    showNotificationToast('Validation Error', 'Please fill in all required fields.');
+    return;
+  }
+  
+  // Validate email
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(email)) {
+    showNotificationToast('Invalid Email', 'Please enter a valid email address.');
+    return;
+  }
+  
+  // Show loading state
+  const originalBtnText = submitBtn.querySelector('.btn-text').textContent;
+  const originalBtnIcon = submitBtn.querySelector('i').className;
+  submitBtn.querySelector('.btn-text').textContent = 'Sending...';
+  submitBtn.querySelector('i').className = 'fas fa-spinner fa-spin';
+  submitBtn.disabled = true;
+  
+  try {
+    // Simulate API call
+    await simulateApiCall(email);
+    
+    // Show success message
+    showContactSuccess(form);
+    showNotificationToast('Message Sent!', 'Thank you for contacting us. We\'ll get back to you soon!');
+    
+    // Store message in localStorage (for demo purposes)
+    const messages = JSON.parse(localStorage.getItem('contactMessages') || '[]');
+    messages.push({
+      name,
+      email,
+      phone: phoneInput.value.trim(),
+      message,
+      timestamp: new Date().toISOString()
+    });
+    localStorage.setItem('contactMessages', JSON.stringify(messages));
+    
+    // Reset form after delay
+    setTimeout(() => {
+      form.reset();
+      resetContactForm(form);
+    }, 3000);
+    
+  } catch (error) {
+    showNotificationToast('Error', 'Failed to send message. Please try again.');
+    resetContactForm(form);
+  }
+}
+
+// Show Contact Success
+function showContactSuccess(form) {
+  const successMessage = document.createElement('div');
+  successMessage.className = 'contact-form-success show';
+  successMessage.innerHTML = `
+    <i class="fas fa-check-circle"></i>
+    <p>Message sent successfully!</p>
+  `;
+  
+  // Add success message styles
+  successMessage.style.cssText = `
+    display: block;
+    text-align: center;
+    padding: 20px;
+    background: rgba(76, 175, 80, 0.1);
+    border: 1px solid rgba(76, 175, 80, 0.3);
+    border-radius: 8px;
+    color: #4caf50;
+    margin-top: 20px;
+    animation: successSlide 0.5s ease;
+  `;
+  
+  // Replace form with success message
+  form.style.display = 'none';
+  form.parentNode.appendChild(successMessage);
+}
+
+// Reset Contact Form
+function resetContactForm(form) {
+  const submitBtn = form.querySelector('.contact-submit-btn');
+  submitBtn.querySelector('.btn-text').textContent = 'Send Message';
+  submitBtn.querySelector('i').className = 'fas fa-paper-plane';
+  submitBtn.disabled = false;
+  
+  // Remove success message if exists
+  const successMessage = form.parentNode.querySelector('.contact-form-success');
+  if (successMessage) {
+    successMessage.remove();
+  }
+  
+  form.style.display = 'flex';
+}
+
+// Form Field Animations
+function initFormAnimations() {
+  const formInputs = document.querySelectorAll('.contact-form input, .contact-form textarea');
+  
+  formInputs.forEach(input => {
+    // Add focus animations
+    input.addEventListener('focus', () => {
+      input.parentElement.classList.add('focused');
+    });
+    
+    input.addEventListener('blur', () => {
+      if (!input.value) {
+        input.parentElement.classList.remove('focused');
+      }
+    });
+    
+    // Add typing animation
+    input.addEventListener('input', () => {
+      const label = input.nextElementSibling;
+      if (label && label.tagName === 'LABEL') {
+        label.style.color = 'var(--accent-secondary)';
+        setTimeout(() => {
+          label.style.color = '';
+        }, 300);
+      }
+    });
+  });
+  
+  // Add button ripple effect
+  const submitBtn = document.querySelector('.contact-submit-btn');
+  if (submitBtn) {
+    submitBtn.addEventListener('click', function(e) {
+      const ripple = this.querySelector('.btn-ripple');
+      const rect = this.getBoundingClientRect();
+      const size = Math.max(rect.width, rect.height);
+      const x = e.clientX - rect.left - size / 2;
+      const y = e.clientY - rect.top - size / 2;
+      
+      ripple.style.width = ripple.style.height = size + 'px';
+      ripple.style.left = x + 'px';
+      ripple.style.top = y + 'px';
+    });
+  }
+}
+
+// Enhanced Contact Item Interactions
+function initContactItemInteractions() {
+  const contactItems = document.querySelectorAll('.contact-item');
+  
+  contactItems.forEach(item => {
+    // Add magnetic effect on hover
+    item.addEventListener('mousemove', (e) => {
+      const rect = item.getBoundingClientRect();
+      const x = e.clientX - rect.left - rect.width / 2;
+      const y = e.clientY - rect.top - rect.height / 2;
+      
+      const moveX = x * 0.15;
+      const moveY = y * 0.15;
+      
+      item.style.transform = `translateX(${10 + moveX}px) translateY(${moveY}px)`;
+    });
+    
+    item.addEventListener('mouseleave', () => {
+      item.style.transform = '';
+    });
+    
+    // Add click feedback
+    item.addEventListener('click', () => {
+      item.style.transition = 'transform 0.1s ease';
+      item.style.transform = 'translateX(15px) scale(0.98)';
+      
+      setTimeout(() => {
+        item.style.transform = '';
+        item.style.transition = '';
+      }, 100);
+    });
+  });
+}
+
+// Contact Icon Pulse Effects
+function initContactIconPulse() {
+  const iconWrappers = document.querySelectorAll('.contact-icon-wrapper');
+  
+  iconWrappers.forEach((wrapper, index) => {
+    // Add staggered pulse animations
+    setTimeout(() => {
+      wrapper.classList.add('pulse-active');
+    }, index * 200);
+    
+    // Enhanced hover effects
+    wrapper.addEventListener('mouseenter', () => {
+      const icon = wrapper.querySelector('i');
+      icon.style.transform = 'scale(1.2) rotate(10deg)';
+    });
+    
+    wrapper.addEventListener('mouseleave', () => {
+      const icon = wrapper.querySelector('i');
+      icon.style.transform = '';
+    });
+  });
+}
+
+// Simulate API Call
+function simulateApiCall(email) {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      // Simulate 90% success rate
+      if (Math.random() > 0.1) {
+        resolve({ success: true, email });
+      } else {
+        reject(new Error('Network error'));
+      }
+    }, 2000);
+  });
+}
+
+// Show Notification Toast
+function showNotificationToast(title, message) {
+  // Create toast element
+  const toast = document.createElement('div');
+  toast.className = 'notification-toast';
+  toast.innerHTML = `
+    <div class="toast-content">
+      <h4>${title}</h4>
+      <p>${message}</p>
+    </div>
+    <button class="toast-close">&times;</button>
+  `;
+  
+  // Add styles
+  toast.style.cssText = `
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+    color: white;
+    padding: 16px;
+    border-radius: 8px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    z-index: 10000;
+    min-width: 300px;
+    transform: translateX(400px);
+    transition: transform 0.3s ease;
+  `;
+  
+  document.body.appendChild(toast);
+  
+  // Animate in
+  setTimeout(() => {
+    toast.style.transform = 'translateX(0)';
+  }, 100);
+  
+  // Auto remove after 5 seconds
+  setTimeout(() => {
+    toast.style.transform = 'translateX(400px)';
+    setTimeout(() => {
+      if (document.body.contains(toast)) {
+        document.body.removeChild(toast);
+      }
+    }, 300);
+  }, 5000);
+  
+  // Close button functionality
+  const closeBtn = toast.querySelector('.toast-close');
+  if (closeBtn) {
+    closeBtn.style.cssText = `
+      background: none;
+      border: none;
+      color: white;
+      font-size: 1.5rem;
+      cursor: pointer;
+      padding: 0;
+      margin-left: 10px;
+    `;
+    
+    closeBtn.addEventListener('click', () => {
+      toast.style.transform = 'translateX(400px)';
+      setTimeout(() => {
+        if (document.body.contains(toast)) {
+          document.body.removeChild(toast);
+        }
+      }, 300);
+    });
+  }
+}
+
+// Update Footer Year
+function updateFooterYear() {
+  const yearSpan = document.querySelector('[data-year]');
+  if (yearSpan) {
+    yearSpan.textContent = new Date().getFullYear();
+  }
+}
+
+// Smooth Scroll for Navigation Links
+document.addEventListener('DOMContentLoaded', () => {
+  const navLinks = document.querySelectorAll('a[href^="#"]');
+  
+  navLinks.forEach(link => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      const targetId = link.getAttribute('href').substring(1);
+      const targetSection = document.getElementById(targetId);
+      
+      if (targetSection) {
+        const offsetTop = targetSection.offsetTop - 80;
+        window.scrollTo({
+          top: offsetTop,
+          behavior: 'smooth'
+        });
+      }
+    });
+  });
+});
