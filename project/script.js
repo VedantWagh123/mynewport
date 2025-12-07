@@ -540,6 +540,201 @@ const debouncedResize = debounce(() => {
 
 window.addEventListener('resize', debouncedResize);
 
+// =========================================
+// MASTER PROJECT CARD MODAL FUNCTIONALITY
+// =========================================
+// This section handles the click events on master project cards
+// and displays a notification modal when projects are not ready
+
+// CLICK EVENT LISTENER - Targets all master project cards
+document.querySelectorAll('.master-project-card').forEach(card => {
+    card.addEventListener('click', (e) => {
+        // EXCLUSION LOGIC - Don't trigger modal if clicking on links/buttons
+        if (e.target.closest('.master-links')) {
+            return; // Exit function - let the links handle their own clicks
+        }
+        
+        e.preventDefault(); // Prevent default card behavior
+        showProjectNotificationModal(); // CALL MODAL FUNCTION
+    });
+});
+
+// =========================================
+// MODAL CREATION AND DISPLAY FUNCTION
+// =========================================
+// This function creates the entire modal structure dynamically
+// including overlay, content, form, and all interactions
+
+function showProjectNotificationModal() {
+    // STEP 1: Create modal overlay (dark background with blur)
+    const modalOverlay = document.createElement('div');
+    modalOverlay.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.8);
+        z-index: 10000;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        backdrop-filter: blur(5px);
+    `;
+
+    // STEP 2: Create modal content container (gradient box)
+    const modalContent = document.createElement('div');
+    modalContent.style.cssText = `
+        background: linear-gradient(135deg, #7f00ff, #00f0ff);
+        color: white;
+        padding: 2.5rem;
+        border-radius: 20px;
+        max-width: 450px;
+        width: 90%;
+        text-align: center;
+        box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        border: 2px solid rgba(255,255,255,0.1);
+        animation: modalSlideIn 0.3s ease;
+    `;
+
+    // STEP 3: Add HTML content to modal (message + form)
+    modalContent.innerHTML = `
+        <div style="margin-bottom: 1.5rem;">
+            <i class="fas fa-tools" style="font-size: 3rem; margin-bottom: 1rem; opacity: 0.9;"></i>
+            <h2 style="margin: 0 0 1rem 0; font-size: 1.8rem; font-weight: 600;">Project Not Ready Yet</h2>
+            <p style="margin: 0 0 1.5rem 0; opacity: 0.9; line-height: 1.6;">
+                This amazing project is currently under development! Be the first to know when it's ready.
+            </p>
+        </div>
+        
+        <form id="notificationForm" style="text-align: left;">
+            <div style="margin-bottom: 1.5rem;">
+                <label style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Your Email</label>
+                <input type="email" 
+                       id="notifyEmail" 
+                       required 
+                       placeholder="Enter your email address" 
+                       style="width: 100%; 
+                              padding: 0.8rem; 
+                              border: none; 
+                              border-radius: 8px; 
+                              font-size: 1rem; 
+                              background: rgba(255,255,255,0.9);
+                              color: #333;">
+            </div>
+            
+            <div style="display: flex; gap: 1rem; justify-content: center;">
+                <button type="submit" 
+                        style="flex: 1; 
+                               padding: 0.8rem 1.5rem; 
+                               background: rgba(255,255,255,0.2); 
+                               color: white; 
+                               border: 2px solid rgba(255,255,255,0.3); 
+                               border-radius: 8px; 
+                               font-size: 1rem; 
+                               font-weight: 600; 
+                               cursor: pointer;
+                               transition: all 0.3s ease;">
+                    <i class="fas fa-bell"></i> Notify Me
+                </button>
+                <button type="button" 
+                        id="closeModal" 
+                        style="flex: 1; 
+                               padding: 0.8rem 1.5rem; 
+                               background: transparent; 
+                               color: white; 
+                               border: 2px solid rgba(255,255,255,0.3); 
+                               border-radius: 8px; 
+                               font-size: 1rem; 
+                               font-weight: 600; 
+                               cursor: pointer;
+                               transition: all 0.3s ease;">
+                    Close
+                </button>
+            </div>
+        </form>
+    `;
+
+    // STEP 4: Add modal to page
+    modalOverlay.appendChild(modalContent);
+    document.body.appendChild(modalOverlay);
+
+    // STEP 5: Add CSS animation for modal appearance
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: scale(0.8) translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+    `;
+    document.head.appendChild(style);
+
+    // =========================================
+    // FORM SUBMISSION HANDLER
+    // =========================================
+    // This handles the email form submission and shows success message
+    const form = document.getElementById('notificationForm');
+    form.addEventListener('submit', (e) => {
+        e.preventDefault(); // Prevent form from actually submitting
+        const email = document.getElementById('notifyEmail').value; // Get email input
+        
+        // STEP 6: Show success message with user's email
+        modalContent.innerHTML = `
+            <div style="text-align: center;">
+                <i class="fas fa-check-circle" style="font-size: 3rem; margin-bottom: 1rem; color: #4ade80;"></i>
+                <h2 style="margin: 0 0 1rem 0; font-size: 1.8rem; font-weight: 600;">You're on the list!</h2>
+                <p style="margin: 0 0 1.5rem 0; opacity: 0.9; line-height: 1.6;">
+                    We'll notify you at <strong>${email}</strong> as soon as this project is ready.
+                </p>
+                <button onclick="this.closest('div[style*="position: fixed"]').remove()" 
+                        style="padding: 0.8rem 2rem; 
+                               background: rgba(255,255,255,0.2); 
+                               color: white; 
+                               border: 2px solid rgba(255,255,255,0.3); 
+                               border-radius: 8px; 
+                               font-size: 1rem; 
+                               font-weight: 600; 
+                               cursor: pointer;">
+                    Got it!
+                </button>
+            </div>
+        `;
+
+        // STEP 7: Auto-close modal after 3 seconds
+        setTimeout(() => {
+            if (document.body.contains(modalOverlay)) {
+                modalOverlay.remove();
+                style.remove();
+            }
+        }, 3000);
+    });
+
+    // =========================================
+    // MODAL CLOSE HANDLERS
+    // =========================================
+    // Multiple ways to close the modal
+
+    // Close via close button
+    document.getElementById('closeModal').addEventListener('click', () => {
+        modalOverlay.remove();
+        style.remove();
+    });
+
+    // Close by clicking outside modal (on overlay)
+    modalOverlay.addEventListener('click', (e) => {
+        if (e.target === modalOverlay) {
+            modalOverlay.remove();
+            style.remove();
+        }
+    });
+}
+
 // Loading States for Project Links
 document.querySelectorAll('.project-btn, .card-links a').forEach(link => {
     link.addEventListener('click', (e) => {
