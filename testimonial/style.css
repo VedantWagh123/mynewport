@@ -123,6 +123,11 @@ body {
     z-index: 1000;
     transition: all 0.3s ease;
     font-size: clamp(0.9rem, 2vw, 1.2rem);
+    /* Enhanced touch target for mobile */
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+    min-width: 44px;
+    min-height: 44px;
 }
 
 .hamburger-btn:hover {
@@ -130,6 +135,12 @@ body {
     border-color: rgba(255, 255, 255, 0.3);
     transform: scale(1.1);
     box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+}
+
+/* Touch feedback for mobile */
+.hamburger-btn:active {
+    transform: scale(0.95);
+    background: rgba(255, 255, 255, 0.3);
 }
 
 .hamburger-btn.active {

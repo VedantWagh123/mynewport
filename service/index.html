@@ -61,7 +61,7 @@
             </div>
             <div class="banner-cta">
               <p class="banner-subtitle">Get notified when we launch!</p>
-              <button class="notify-btn" id="notifyBtn">
+              <button class="notify-btn" id="notifyBtn" onclick="openNotifyForm()">
                 <i class="fas fa-bell"></i>
                 <span>Notify Me</span>
               </button>
@@ -82,25 +82,36 @@
               </div>
             </div>
             <div class="service-content">
-              <h3 class="service-title"><span class="gradient-text">Frontend</span> Development</h3>
+              <h3 class="service-title">Frontend Development</h3>
               <p class="service-description">
-                Building responsive, interactive, and performant web applications using modern frameworks and cutting-edge technologies.
+                Creating responsive, interactive user interfaces with modern frameworks and cutting-edge technologies.
               </p>
-              <ul class="service-features">
-                <li><i class="fas fa-check"></i> React/Vue/Angular</li>
-                <li><i class="fas fa-check"></i> TypeScript & JavaScript</li>
-                <li><i class="fas fa-check"></i> Responsive Design</li>
-                <li><i class="fas fa-check"></i> Performance Optimization</li>
-              </ul>
-              <div class="service-status">
-                <span class="status-badge coming-soon">Coming Soon</span>
-                <span class="status-date">June 2026</span>
+              <div class="service-features">
+                <div class="feature-item">
+                  <i class="fas fa-check"></i>
+                  <span>React/Vue/Angular</span>
+                </div>
+                <div class="feature-item">
+                  <i class="fas fa-check"></i>
+                  <span>Responsive Design</span>
+                </div>
+                <div class="feature-item">
+                  <i class="fas fa-check"></i>
+                  <span>Performance Optimization</span>
+                </div>
+              </div>
+              <div class="service-footer">
+                <a href="../contact-section/index.html" class="service-link">
+                  <span>Get Started</span>
+                  <i class="fas fa-arrow-right"></i>
+                </a>
               </div>
             </div>
-            <div class="service-card-bg"></div>
-            <div class="service-particles"></div>
           </div>
         </div>
+        <div class="service-card-bg"></div>
+        <div class="service-particles"></div>
+      </div>
 
         <!-- Backend Development -->
         <div class="service-card" data-aos="fade-up" data-aos-delay="400" data-service="backend">
@@ -335,9 +346,9 @@
             <h4>Quick Links</h4>
             <ul>
               <li><a href="../index.html">Home</a></li>
-              <li><a href="#services">Services</a></li>
-              <li><a href="#about">About</a></li>
-              <li><a href="#contact">Contact</a></li>
+              <li><a href="../about/index.html">About</a></li>
+              <li><a href="../project/index.html">Projects</a></li>
+              <li><a href="../testimonial/index.html">Testimonials</a></li>
             </ul>
           </div>
           
@@ -458,54 +469,30 @@
     </div>
   </footer>
 
-  <!-- Email Reminder Modal -->
-  <div class="modal-overlay" id="modalOverlay">
-    <div class="reminder-modal" id="reminderModal">
-      <div class="modal-header">
-        <h3 class="modal-title">
-          <i class="fas fa-bell"></i>
-          Get Notified!
-        </h3>
-        <button class="modal-close" id="modalClose">
+  <!-- Simple Notify Form Modal -->
+  <div class="notify-modal-overlay" id="notifyModalOverlay">
+    <div class="notify-modal" id="notifyModal">
+      <div class="notify-modal-header">
+        <h3>Get Notified!</h3>
+        <button class="notify-modal-close" onclick="closeNotifyForm()">
           <i class="fas fa-times"></i>
         </button>
       </div>
-      <div class="modal-content">
-        <p class="modal-description">
-          Be the first to know when our services launch in June 2026. Enter your email below and we'll send you a notification as soon as we're ready!
-        </p>
-        <form class="reminder-form" id="reminderForm">
-          <div class="form-group">
-            <label for="emailInput" class="form-label">
-              <i class="fas fa-envelope"></i>
-              Email Address
-            </label>
-            <input 
-              type="email" 
-              id="emailInput" 
-              class="form-input" 
-              placeholder="Enter your email address"
-              required
-            >
-            <span class="form-error" id="emailError">Please enter a valid email address</span>
+      <div class="notify-modal-content">
+        <p>Enter your email and we'll remind you when our services launch!</p>
+        <form class="notify-form" id="notifyForm" onsubmit="handleNotifySubmit(event)">
+          <div class="notify-form-group">
+            <input type="email" id="notifyEmail" placeholder="Enter your email" required>
           </div>
-          <div class="form-group">
-            <label class="checkbox-label">
-              <input type="checkbox" id="consentCheckbox" required>
-              <span class="checkbox-custom"></span>
-              <span class="checkbox-text">
-                I agree to receive notifications about service launches and updates
-              </span>
-            </label>
-          </div>
-          <button type="submit" class="submit-btn" id="submitBtn">
-            <span class="btn-text">Notify Me</span>
+          <button type="submit" class="notify-submit-btn">
+            <span>Remind Me</span>
             <i class="fas fa-arrow-right"></i>
           </button>
         </form>
-        <div class="success-message" id="successMessage">
+        <div class="notify-success" id="notifySuccess">
           <i class="fas fa-check-circle"></i>
-          <p>Thank you! We'll notify you as soon as our services launch.</p>
+          <p>Thank you for your interest!</p>
+          <p style="font-size: 1rem; margin-top: 10px; opacity: 0.9;">We will remind you in a few days when our services launch.</p>
         </div>
       </div>
     </div>

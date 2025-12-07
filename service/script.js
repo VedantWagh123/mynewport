@@ -158,6 +158,8 @@ function initServicesCTA() {
 
 // Generic Notification Toast
 function showNotificationToast(title, message) {
+  console.log('Attempting to show notification:', title, message);
+  
   // Remove existing notification if any
   const existingToast = document.querySelector('.notification-toast');
   if (existingToast) {
@@ -181,19 +183,65 @@ function showNotificationToast(title, message) {
   
   // Add to body
   document.body.appendChild(notification);
+  console.log('Notification added to DOM');
   
   // Trigger animation
   setTimeout(() => {
     notification.classList.add('show');
+    console.log('Notification show class added');
   }, 100);
   
   // Auto remove after 4 seconds
   setTimeout(() => {
     notification.classList.remove('show');
+    console.log('Notification show class removed');
     setTimeout(() => {
       notification.remove();
+      console.log('Notification removed from DOM');
     }, 400);
   }, 4000);
+}
+
+// Simple Notification Function (fallback)
+function showSimpleNotification(message) {
+  console.log('Showing simple notification:', message);
+  
+  // Create a simple div notification
+  const simpleNotif = document.createElement('div');
+  simpleNotif.style.cssText = `
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: linear-gradient(135deg, #7f00ff, #00f0ff);
+    color: white;
+    padding: 15px 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(127, 0, 255, 0.4);
+    z-index: 10000;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    max-width: 300px;
+    transform: translateX(400px);
+    transition: transform 0.3s ease;
+  `;
+  simpleNotif.textContent = message;
+  
+  document.body.appendChild(simpleNotif);
+  
+  // Animate in
+  setTimeout(() => {
+    simpleNotif.style.transform = 'translateX(0)';
+  }, 100);
+  
+  // Remove after 3 seconds
+  setTimeout(() => {
+    simpleNotif.style.transform = 'translateX(400px)';
+    setTimeout(() => {
+      if (simpleNotif.parentNode) {
+        simpleNotif.parentNode.removeChild(simpleNotif);
+      }
+    }, 300);
+  }, 3000);
 }
 
 // Service Section Intersection Observer
@@ -834,6 +882,10 @@ function initEmailReminderForm() {
   const submitBtn = document.getElementById('submitBtn');
   const successMessage = document.getElementById('successMessage');
 
+  console.log('Initializing email reminder form...');
+  console.log('Notify button found:', !!notifyBtn);
+  console.log('Modal overlay found:', !!modalOverlay);
+
   // Open modal when clicking on the banner or notify button
   if (comingSoonBanner) {
     comingSoonBanner.addEventListener('click', (e) => {
@@ -846,9 +898,20 @@ function initEmailReminderForm() {
 
   if (notifyBtn) {
     notifyBtn.addEventListener('click', (e) => {
+      console.log('Notify button clicked!');
       e.stopPropagation();
-      openReminderModal();
+      
+      // Try to open modal first
+      try {
+        openReminderModal();
+      } catch (error) {
+        console.error('Error opening modal:', error);
+        // Fallback: show direct notification
+        showNotificationToast('Get Notified!', 'Click here to enter your email for service launch notifications.');
+      }
     });
+  } else {
+    console.error('Notify button not found!');
   }
 
   // Close modal handlers
@@ -866,7 +929,7 @@ function initEmailReminderForm() {
 
   // Close on Escape key
   document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && modalOverlay.classList.contains('show')) {
+    if (e.key === 'Escape' && modalOverlay && modalOverlay.classList.contains('show')) {
       closeReminderModal();
     }
   });
@@ -888,9 +951,12 @@ function openReminderModal() {
   const modalOverlay = document.getElementById('modalOverlay');
   const emailInput = document.getElementById('emailInput');
   
+  console.log('Opening reminder modal...');
+  
   if (modalOverlay) {
     modalOverlay.classList.add('show');
     document.body.style.overflow = 'hidden';
+    console.log('Modal opened successfully');
     
     // Focus email input after animation
     setTimeout(() => {
@@ -898,6 +964,8 @@ function openReminderModal() {
         emailInput.focus();
       }
     }, 300);
+  } else {
+    console.error('Modal overlay not found!');
   }
 }
 
@@ -909,6 +977,7 @@ function closeReminderModal() {
   const emailInput = document.getElementById('emailInput');
   const consentCheckbox = document.getElementById('consentCheckbox');
   const submitBtn = document.getElementById('submitBtn');
+  const emailError = document.getElementById('emailError');
   
   if (modalOverlay) {
     modalOverlay.classList.remove('show');
@@ -917,6 +986,7 @@ function closeReminderModal() {
     // Reset form after animation
     setTimeout(() => {
       if (reminderForm) {
+        reminderForm.style.display = 'block';
         reminderForm.reset();
       }
       if (emailInput) {
@@ -932,6 +1002,7 @@ function closeReminderModal() {
         submitBtn.classList.remove('loading');
         submitBtn.disabled = false;
         submitBtn.querySelector('.btn-text').textContent = 'Notify Me';
+        submitBtn.onclick = null; // Reset to original form submission
       }
     }, 300);
   }
@@ -992,6 +1063,8 @@ function clearEmailError() {
 async function handleFormSubmit(e) {
   e.preventDefault();
   
+  console.log('Form submitted!');
+  
   const emailInput = document.getElementById('emailInput');
   const consentCheckbox = document.getElementById('consentCheckbox');
   const submitBtn = document.getElementById('submitBtn');
@@ -1000,14 +1073,18 @@ async function handleFormSubmit(e) {
   
   // Validate email
   if (!validateEmail()) {
+    console.log('Email validation failed');
     return;
   }
   
   // Check consent
   if (!consentCheckbox.checked) {
-    showNotificationToast('Consent Required', 'Please agree to receive notifications to continue.');
+    console.log('Consent not checked');
+    alert('Please agree to receive notifications to continue.');
     return;
   }
+  
+  console.log('Form validation passed, submitting...');
   
   // Show loading state
   if (submitBtn) {
@@ -1018,11 +1095,15 @@ async function handleFormSubmit(e) {
   
   // Simulate API call (replace with actual API call)
   try {
+    console.log('Simulating API call...');
     await simulateApiCall(emailInput.value.trim());
+    
+    console.log('API call successful');
     
     // Show success message
     if (successMessage) {
       successMessage.classList.add('show');
+      console.log('Success message shown');
     }
     
     // Hide form
@@ -1035,17 +1116,20 @@ async function handleFormSubmit(e) {
     if (!storedEmails.includes(emailInput.value.trim())) {
       storedEmails.push(emailInput.value.trim());
       localStorage.setItem('serviceNotifications', JSON.stringify(storedEmails));
+      console.log('Email stored in localStorage');
     }
     
-    // Show success notification
-    showNotificationToast('Success!', 'You\'ll be notified when our services launch in June 2026.');
-    
-    // Close modal after delay
-    setTimeout(() => {
-      closeReminderModal();
-    }, 3000);
+    // Change button to "Close" after successful submission
+    if (submitBtn) {
+      submitBtn.classList.remove('loading');
+      submitBtn.disabled = false;
+      submitBtn.querySelector('.btn-text').textContent = 'Close';
+      submitBtn.onclick = closeReminderModal;
+    }
     
   } catch (error) {
+    console.error('API call failed:', error);
+    
     // Show error state
     if (submitBtn) {
       submitBtn.classList.remove('loading');
@@ -1053,7 +1137,7 @@ async function handleFormSubmit(e) {
       submitBtn.querySelector('.btn-text').textContent = 'Notify Me';
     }
     
-    showNotificationToast('Error', 'Something went wrong. Please try again.');
+    alert('Something went wrong. Please try again.');
   }
 }
 
@@ -1070,3 +1154,139 @@ function simulateApiCall(email) {
     }, 2000);
   });
 }
+
+// Simple Notify Form Functions
+window.openNotifyForm = function() {
+  const modal = document.getElementById('notifyModalOverlay');
+  if (modal) {
+    modal.classList.add('show');
+    document.body.style.overflow = 'hidden';
+  }
+};
+
+window.closeNotifyForm = function() {
+  const modal = document.getElementById('notifyModalOverlay');
+  if (modal) {
+    modal.classList.remove('show');
+    document.body.style.overflow = '';
+    // Reset form
+    setTimeout(() => {
+      const form = document.getElementById('notifyForm');
+      const success = document.getElementById('notifySuccess');
+      if (form) {
+        form.style.display = 'block';
+        form.reset();
+      }
+      if (success) {
+        success.classList.remove('show');
+      }
+    }, 300);
+  }
+};
+
+window.handleNotifySubmit = function(event) {
+  event.preventDefault();
+  
+  const email = document.getElementById('notifyEmail').value.trim();
+  const form = document.getElementById('notifyForm');
+  const success = document.getElementById('notifySuccess');
+  
+  // Basic email validation
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!email || !emailRegex.test(email)) {
+    alert('Please enter a valid email address');
+    return;
+  }
+  
+  // Store email with timestamp
+  const emails = JSON.parse(localStorage.getItem('notifyEmails') || '[]');
+  if (!emails.find(e => e.email === email)) {
+    emails.push({
+      email: email,
+      timestamp: new Date().toISOString(),
+      status: 'pending'
+    });
+    localStorage.setItem('notifyEmails', JSON.stringify(emails));
+    console.log('Email stored for notification:', email);
+  }
+  
+  // Hide form and show success with animation
+  form.style.display = 'none';
+  success.classList.add('show');
+  
+  // Add celebration effect
+  createCelebrationEffect();
+  
+  // Close modal after 4 seconds (increased for better readability)
+  setTimeout(() => {
+    closeNotifyForm();
+  }, 4000);
+};
+
+// Celebration effect for successful submission
+function createCelebrationEffect() {
+  const success = document.getElementById('notifySuccess');
+  const colors = ['#7f00ff', '#00f0ff', '#ff6b6b', '#4ecdc4'];
+  
+  for (let i = 0; i < 20; i++) {
+    const particle = document.createElement('div');
+    particle.style.cssText = `
+      position: absolute;
+      width: 6px;
+      height: 6px;
+      background: ${colors[Math.floor(Math.random() * colors.length)]};
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 1001;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      animation: celebrateParticle 1s ease-out forwards;
+      animation-delay: ${i * 0.05}s;
+    `;
+    
+    success.appendChild(particle);
+    
+    setTimeout(() => {
+      particle.remove();
+    }, 1000);
+  }
+}
+
+// Add celebration animation to CSS
+const celebrationCSS = `
+@keyframes celebrateParticle {
+  0% {
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(
+      ${(Math.random() - 0.5) * 200}px,
+      ${(Math.random() - 0.5) * 200}px
+    ) scale(1);
+    opacity: 0;
+  }
+}
+`;
+
+// Inject celebration CSS
+const style = document.createElement('style');
+style.textContent = celebrationCSS;
+document.head.appendChild(style);
+
+// Close modal when clicking outside
+document.addEventListener('click', function(event) {
+  const modal = document.getElementById('notifyModalOverlay');
+  if (modal && event.target === modal) {
+    closeNotifyForm();
+  }
+});
+
+// Close modal with Escape key
+document.addEventListener('keydown', function(event) {
+  const modal = document.getElementById('notifyModalOverlay');
+  if (event.key === 'Escape' && modal && modal.classList.contains('show')) {
+    closeNotifyForm();
+  }
+});

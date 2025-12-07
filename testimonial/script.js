@@ -22,6 +22,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const prevButton = document.querySelector('.prev');
     const sectionHeader = document.querySelector('.section-header');
     const testimonialSection = document.querySelector('.testimonial-section');
+    
+    // Mobile Navigation Elements
+    const hamburgerBtn = document.getElementById('hamburgerBtn');
+    const mobileNav = document.getElementById('mobileNav');
+    const navOverlay = document.getElementById('navOverlay');
 
     // ============================================================
     // INITIALIZATION FUNCTIONS
@@ -32,6 +37,88 @@ document.addEventListener('DOMContentLoaded', () => {
     initStarRatings();
     initParallaxEffect();
     initIntersectionObserver();
+    initMobileNavigation(); // Add mobile navigation initialization
+
+    // ============================================================
+    // MOBILE NAVIGATION FUNCTIONALITY
+    // ============================================================
+    function initMobileNavigation() {
+        console.log('Initializing mobile navigation...');
+        
+        if (!hamburgerBtn || !mobileNav || !navOverlay) {
+            console.error('Mobile navigation elements not found:', {
+                hamburgerBtn: !!hamburgerBtn,
+                mobileNav: !!mobileNav,
+                navOverlay: !!navOverlay
+            });
+            return;
+        }
+
+        console.log('Mobile navigation elements found, adding event listeners...');
+
+        // Toggle mobile navigation
+        hamburgerBtn.addEventListener('click', (e) => {
+            console.log('Hamburger button clicked!');
+            e.preventDefault();
+            toggleMobileNav();
+        });
+        
+        // Close navigation when clicking overlay
+        navOverlay.addEventListener('click', (e) => {
+            console.log('Overlay clicked, closing nav...');
+            e.preventDefault();
+            closeMobileNav();
+        });
+        
+        // Close navigation when clicking on a nav link
+        const navLinks = mobileNav.querySelectorAll('.nav-link');
+        console.log(`Found ${navLinks.length} navigation links`);
+        navLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                console.log('Nav link clicked, closing nav...');
+                closeMobileNav();
+            });
+        });
+
+        // Close navigation on Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && mobileNav.classList.contains('active')) {
+                console.log('Escape key pressed, closing nav...');
+                closeMobileNav();
+            }
+        });
+        
+        console.log('Mobile navigation initialized successfully');
+    }
+
+    function toggleMobileNav() {
+        const isActive = mobileNav.classList.contains('active');
+        console.log('Toggling mobile nav, current state:', isActive);
+        
+        if (isActive) {
+            closeMobileNav();
+        } else {
+            openMobileNav();
+        }
+    }
+
+    function openMobileNav() {
+        console.log('Opening mobile navigation...');
+        mobileNav.classList.add('active');
+        navOverlay.classList.add('active');
+        hamburgerBtn.classList.add('active');
+        document.body.style.overflow = 'hidden'; // Prevent body scroll
+        console.log('Mobile navigation opened');
+    }
+
+    function closeMobileNav() {
+        console.log('Closing mobile navigation...');
+        mobileNav.classList.remove('active');
+        navOverlay.classList.remove('active');
+        hamburgerBtn.classList.remove('active');
+        document.body.style.overflow = ''; // Restore body scroll
+        console.log('Mobile navigation closed');
+    }
 
     // ============================================================
     // ANIMATIONS INITIALIZATION
