@@ -1,4 +1,4 @@
- // ============================================================
+  // ============================================================
 // MOBILE NAVIGATION FUNCTIONALITY
 // Handles hamburger menu, mobile navigation, scroll-based header hiding
 // ============================================================
@@ -205,42 +205,41 @@ function initCustomCursor() {
     animateCursor(); // Start animation loop
 
     // Add hover effects on project cards
-    // Cursor changes appearance when hovering over project cards
+    // Hide custom cursor and show default cursor when hovering over project cards
     document.querySelectorAll('.featured-project-card').forEach(card => {
       card.addEventListener('mouseenter', () => {
-        cursor?.classList.add('featured-hover'); // Add featured hover state
+        cursor?.classList.add('hide-cursor'); // Hide custom cursor
+        card.style.cursor = 'default'; // Show default cursor
       });
       card.addEventListener('mouseleave', () => {
-        cursor?.classList.remove('featured-hover'); // Remove featured hover state
+        cursor?.classList.remove('hide-cursor'); // Show custom cursor again
+        card.style.cursor = ''; // Remove inline cursor style
       });
     });
 
     // Master feature cards cursor effects
+    // Hide custom cursor and show default cursor when hovering over feature cards
     document.querySelectorAll('.feature-card.master-card').forEach(card => {
       card.addEventListener('mouseenter', () => {
-        cursor?.classList.add('master-hover'); // Add master hover state
+        cursor?.classList.add('hide-cursor'); // Hide custom cursor
+        card.style.cursor = 'default'; // Show default cursor
       });
       card.addEventListener('mouseleave', () => {
-        cursor?.classList.remove('master-hover'); // Remove master hover state
+        cursor?.classList.remove('hide-cursor'); // Show custom cursor again
+        card.style.cursor = ''; // Remove inline cursor style
       });
     });
 
+    // Advanced project cards cursor effects
+    // Hide custom cursor and show default cursor when hovering over project cards
     document.querySelectorAll('.project-card.advanced-card').forEach(card => {
       card.addEventListener('mouseenter', () => {
-        cursor?.classList.add('hover'); // Add hover state to cursor
+        cursor?.classList.add('hide-cursor'); // Hide custom cursor
+        card.style.cursor = 'default'; // Show default cursor
       });
       card.addEventListener('mouseleave', () => {
-        cursor?.classList.remove('hover'); // Remove hover state
-      });
-    });
-
-    // Different cursor style for footer interactive elements
-    document.querySelectorAll('.theory-box').forEach(box => {
-      box.addEventListener('mouseenter', () => {
-        cursor?.classList.add('footer-hover'); // Add footer hover state
-      });
-      box.addEventListener('mouseleave', () => {
-        cursor?.classList.remove('footer-hover'); // Remove footer hover state
+        cursor?.classList.remove('hide-cursor'); // Show custom cursor again
+        card.style.cursor = ''; // Remove inline cursor style
       });
     });
 
