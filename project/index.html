@@ -1,382 +1,466 @@
-   <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <!-- Meta Tags for SEO and Performance -->
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
-    <meta name="description" content="Projects - View featured projects and digital experiences crafted by Vedant." />
-    <meta name="theme-color" content="#0b0c11" />
-    <title>Projects | Vedant Portfolio</title>
-    
-    <!-- Favicon -->
-    <link rel="icon" href="../favison.png" type="image/x-icon" />
-    
-    <!-- Font Preconnection for Performance -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&display=swap"
-      rel="stylesheet"
-    />
-    
-    <!-- Stylesheets -->
-    <link rel="stylesheet" href="../style.css" />
-    <link rel="stylesheet" href="./style.css" />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
-    />
-    
-    <!-- Animation Library -->
-    <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css" />
-    
-    <!-- Lottie Animation Library -->
-    <script
-      src="https://unpkg.com/@lottiefiles/dotlottie-wc@0.6.2/dist/dotlottie-wc.js"
-      type="module"
-    ></script>
-  </head>
-  <body>
-    <!-- ============================================================ -->
-    <!-- BACKGROUND PARTICLE CANVAS -->
-    <!-- ============================================================ -->
-    <canvas
-      id="particle-canvas"
-      style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none;"
-    ></canvas>
-
-    <!-- Home Button -->
-    <a href="../index.html" class="home-btn" title="Go to Home">
-      <i class="fas fa-home"></i>
-    </a>
-
-    <header class="main-nav">
-      <nav class="nav-links" id="navLinks">
-        <ul>
-          <li><a href="../about/index.html">About</a></li>
-          <li><a href="../service/index.html">Services</a></li>
-          <li><a href="./index.html" class="active-link">Projects</a></li>
-          <li><a href="../testimonial/index.html">Testimonials</a></li>
-          <li><a href="../contact/index.html">Contact</a></li>
-        </ul>
-        <a href="#" id="cvButton" class="cv-button">Download CV</a>
-      </nav>
-      <div class="menu-icon" onclick="toggleMenu()">
-        <span></span>
-        <span></span>
-        <span></span>
-      </div>
-    </header>
-
-    <!-- Custom Cursor -->
-    <div class="custom-cursor" id="customCursor">
-      <div class="cursor-dot"></div>
-      <div class="cursor-outline"></div>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projects - Vedant | Web Designer & Developer</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <script src="https://unpkg.com/@lottiefiles/dotlottie-wc@0.6.2/dist/dotlottie-wc.js" type="module"></script>
+    <link rel="icon" href="../fevison.png" type="image/x-icon">
+</head>
+<body>
+    <!-- Background Animations -->
+    <canvas id="particle-canvas" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none;"></canvas>
+    <div class="gradient-bg"></div>
+    <div class="floating-shapes">
+        <div class="shape shape-1"></div>
+        <div class="shape shape-2"></div>
+        <div class="shape shape-3"></div>
+        <div class="shape shape-4"></div>
     </div>
 
-    <main class="projects-page">
-      <section class="projects-hero fade-in-section" data-aos="fade-up">
-        <div class="projects-hero__inner">
-          <span class="section-eyebrow">Selected Work</span>
-          <h1 class="section-title">Projects That Push Boundaries</h1>
-          <p class="section-subtitle">
-            A snapshot of immersive digital experiences crafted with performance, motion, and storytelling. Swap these
-            placeholders with your own launches when you are ready.
-          </p>
+    <!-- Home Button -->
+    <a href="../index.html" class="home-btn">
+        <i class="fas fa-home"></i>
+    </a>
+
+    <!-- Navigation -->
+    <header class="main-nav">
+        <a href="../index.html" class="nav-logo">
+            <img src="../fevison.png" alt="Vedant Logo">
+            <span>Vedant</span>
+        </a>
+        
+        <nav class="nav-links" id="navLinks">
+            <ul>
+                <li><a href="../about/index.html"><i class="fas fa-user"></i>About</a></li>
+                <li><a href="../service/index.html"><i class="fas fa-cogs"></i>Services</a></li>
+                <li><a href="index.html" class="active-link"><i class="fas fa-briefcase"></i>Projects</a></li>
+                <li><a href="../testimonial/index.html"><i class="fas fa-comments"></i>Testimonials</a></li>
+                <li><a href="../contact/index.html"><i class="fas fa-envelope"></i>Contact</a></li>
+            </ul>
+            <a href="#" id="cvButton" class="cv-button">
+                <i class="fas fa-download"></i>
+                Download CV
+            </a>
+        </nav>
+        <div class="menu-icon" onclick="toggleMenu()">
+            <span></span>
+            <span></span>
+            <span></span>
         </div>
-      </section>
+    </header>
 
-      <section class="projects-theory fade-in-section" data-aos="fade-up" data-aos-delay="80">
-        <div class="theory-card">
-          <h2 class="theory-title">Experience-First Project Theory</h2>
-          <p class="theory-lede">
-            Every build blends motion, performance, and storytelling. This section outlines the guiding principles I
-            apply before writing a single line of code.
-          </p>
-          <ul class="theory-list">
-            <li><strong>Intentional Atmosphere:</strong> Set the emotional tone first, then layer UI states around it.</li>
-            <li><strong>Responsive Story:</strong> Ensure layouts respond to both viewport and context, not just breakpoints.</li>
-            <li><strong>Immersive Feedback:</strong> Micro-interactions should communicate status, not just delight.</li>
-          </ul>
+    <!-- Preloader -->
+    <div id="preloader">
+        <div class="preloader-container">
+            <div class="preloader-logo">
+                <img src="../fevison.png" alt="Vedant Logo">
+            </div>
+            <div class="preloader-text">
+                <h2>Vedant</h2>
+                <p>Web Designer & Developer</p>
+            </div>
+            <div class="preloader-loader">
+                <div class="loader-circle"></div>
+                <div class="loader-circle"></div>
+                <div class="loader-circle"></div>
+            </div>
+            <div class="preloader-progress">
+                <div class="progress-bar">
+                    <div class="progress-fill"></div>
+                </div>
+                <span class="progress-text">0%</span>
+            </div>
         </div>
-      </section>
+    </div>
 
-      <section class="featured-projects-section" data-aos="fade-up" data-aos-delay="120">
-        <div class="featured-projects-header">
-          <h2 class="featured-title">Featured Projects</h2>
-          <p class="featured-subtitle">A couple of standout projects I'm particularly proud of.</p>
-        </div>
-        <div class="featured-projects-grid">
-          <!-- Featured Project 1 -->
-          <div class="featured-project-card" data-featured-index="0">
-            <div class="project-image-container">
-              <img src="https://via.placeholder.com/600x400/1a1a2e/ffffff?text=Project+One" alt="Featured Project One">
-            </div>
-            <div class="project-info">
-              <h3 class="featured-project-title">E-Commerce Platform Redesign</h3>
-              <p class="featured-project-description">A complete overhaul of a legacy e-commerce site, focusing on a modern user experience, performance, and scalability. Implemented a new design system and a headless architecture.</p>
-              <div class="project-tags">
-                <span class="tag">UI/UX Design</span>
-                <span class="tag">React</span>
-                <span class="tag">Node.js</span>
-              </div>
-              <a href="#" class="project-link">View Case Study &rarr;</a>
-            </div>
-          </div>
-          <!-- Featured Project 2 -->
-          <div class="featured-project-card" data-featured-index="1">
-            <div class="project-image-container">
-              <img src="https://via.placeholder.com/600x400/1a1a2e/ffffff?text=Project+Two" alt="Featured Project Two">
-            </div>
-            <div class="project-info">
-              <h3 class="featured-project-title">Interactive Data Visualization</h3>
-              <p class="featured-project-description">A web-based tool for visualizing complex financial data in real-time. Built with D3.js, it allows users to explore and understand market trends through an interactive interface.</p>
-              <div class="project-tags">
-                <span class="tag">Data Viz</span>
-                <span class="tag">D3.js</span>
-                <span class="tag">WebSockets</span>
-              </div>
-              <a href="#" class="project-link">View Live Demo &rarr;</a>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section class="projects-section fade-in-section" data-aos="fade-up" data-aos-delay="150">
-        <div class="projects-content">
-          <div class="projects-grid">
-       
-      <!-- Advanced Footer Section with Theory -->
-      <footer class="projects-footer">
-        <div class="footer-wrapper">
-          <!-- Footer Theory Sections -->
-          <div class="footer-content">
-            <div class="theory-box">
-              <div class="theory-icon">💡</div>
-              <h4 class="theory-subtitle">Innovation First</h4>
-              <p class="theory-description">Every project begins with bold ideas. We push boundaries, explore new technologies, and create solutions that inspire.</p>
-              <div class="theory-accent"></div>
-            </div>
-
-            <div class="theory-box">
-              <div class="theory-icon">⚡</div>
-              <h4 class="theory-subtitle">Performance Focused</h4>
-              <p class="theory-description">Speed matters. We optimize every millisecond, ensuring smooth interactions and lightning-fast load times across all devices.</p>
-              <div class="theory-accent"></div>
-            </div>
-
-            <div class="theory-box">
-              <div class="theory-icon">🎨</div>
-              <h4 class="theory-subtitle">Design Excellence</h4>
-              <p class="theory-description">Beauty meets function. Our designs are intuitive, accessible, and crafted with meticulous attention to every detail.</p>
-              <div class="theory-accent"></div>
-            </div>
-
-            <div class="theory-box">
-              <div class="theory-icon">🔗</div>
-              <h4 class="theory-subtitle">User Centric</h4>
-              <p class="theory-description">User experience is our priority. We create meaningful connections between people and digital products through empathetic design.</p>
-              <div class="theory-accent"></div>
-            </div>
-          </div>
-
-          <!-- Divider -->
-          <div class="footer-divider"></div>
-
-          <!-- Footer Bottom -->
-          <div class="footer-bottom">
-            <p class="footer-text">&copy; 2025 Vedant Wagh. All rights reserved.</p>
-            <div class="social-links">
-              <a href="#" class="social-link" title="GitHub">
-                <i class="fab fa-github"></i>
-              </a>
-              <a href="#" class="social-link" title="LinkedIn">
-                <i class="fab fa-linkedin"></i>
-              </a>
-              <a href="#" class="social-link" title="Twitter">
-                <i class="fab fa-twitter"></i>
-              </a>
-            </div>
-          </div>
-        </div>
-      </footer>
-
-      <!-- ============================================================ -->
-      <!-- TESTIMONIALS SECTION -->
-      <!-- ============================================================ -->
-      <section class="testimonials-section fade-in-section" data-aos="fade-up" data-aos-delay="200">
-        <div class="testimonials-container">
-          <div class="testimonials-header">
-            <span class="section-eyebrow">Client Feedback</span>
-            <h2 class="testimonials-title">What Clients Say</h2>
-            <p class="testimonials-subtitle">
-              Real experiences from real clients who've worked with me on various projects
-            </p>
-          </div>
-
-          <div class="testimonials-grid">
-            <!-- Testimonial 1 -->
-            <div class="testimonial-card">
-              <div class="testimonial-header">
-                <div class="client-avatar">
-                  <img src="https://i.pravatar.cc/150?img=11" alt="Sarah Chen" loading="lazy">
+    <!-- Main Content -->
+    <main class="projects-main">
+        <!-- Hero Section -->
+        <section class="hero-section">
+            <div class="hero-content">
+                <h1 class="hero-title" data-aos="fade-up">My <span class="highlight">Projects</span></h1>
+                <p class="hero-subtitle" data-aos="fade-up" data-aos-delay="100">Showcasing innovative web solutions and creative designs</p>
+                <div class="hero-stats" data-aos="fade-up" data-aos-delay="200">
+                    <div class="stat-card">
+                        <div class="stat-number" data-count="50">0</div>
+                        <div class="stat-label">Projects</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" data-count="95">0</div>
+                        <div class="stat-label">Satisfaction</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" data-count="8">0</div>
+                        <div class="stat-label">Experience</div>
+                    </div>
                 </div>
-                <div class="client-info">
-                  <h4 class="client-name">Sarah Chen</h4>
-                  <p class="client-role">CEO, TechStart</p>
-                </div>
-                <div class="testimonial-rating">
-                  <i class="fas fa-star"></i>
-                  <i class="fas fa-star"></i>
-                  <i class="fas fa-star"></i>
-                  <i class="fas fa-star"></i>
-                  <i class="fas fa-star"></i>
-                </div>
-              </div>
-              <div class="testimonial-content">
-                <p class="testimonial-text">
-                  "Working with Vedant was an absolute game-changer for our startup. The attention to detail and innovative approach to our web application exceeded all expectations. Our user engagement increased by 300% within the first month."
-                </p>
-              </div>
+            </div>
+        </section>
+
+        <!-- Master Featured Projects -->
+        <section class="master-featured-section">
+            <div class="section-header" data-aos="fade-up">
+                <h2 class="section-title">Master <span class="highlight">Featured</span></h2>
+                <p class="section-subtitle">Premium web applications with cutting-edge technology</p>
             </div>
 
-            <!-- Testimonial 2 -->
-            <div class="testimonial-card">
-              <div class="testimonial-header">
-                <div class="client-avatar">
-                  <img src="https://i.pravatar.cc/150?img=12" alt="Michael Rodriguez" loading="lazy">
+            <div class="master-featured-grid">
+                <!-- Master Project 1 -->
+                <div class="master-project-card" data-aos="fade-up" data-aos-delay="100">
+                    <div class="master-project-wrapper">
+                        <div class="master-project-image">
+                            <img src="https://images.unsplash.com/photo-1551650975-87deedd944c3?w=600&h=400&fit=crop" alt="E-Commerce Platform">
+                            <div class="master-overlay"></div>
+                        </div>
+                        <div class="master-project-content">
+                            <div class="master-category">E-Commerce</div>
+                            <h3 class="master-project-title">Revolution Platform</h3>
+                            <p class="master-project-description">Next-generation e-commerce solution with AI-powered recommendations and seamless user experience</p>
+                            <div class="master-tech">
+                                <span class="tech-tag">React</span>
+                                <span class="tech-tag">Node.js</span>
+                                <span class="tech-tag">MongoDB</span>
+                                <span class="tech-tag">AI/ML</span>
+                            </div>
+                            <div class="master-links">
+                                <a href="#" class="project-btn primary">
+                                    <i class="fas fa-external-link-alt"></i>
+                                    Live Demo
+                                </a>
+                                <a href="#" class="project-btn secondary">
+                                    <i class="fab fa-github"></i>
+                                    Source Code
+                                </a>
+                            </div>
+                        </div>
+                        <div class="master-glow"></div>
+                    </div>
                 </div>
-                <div class="client-info">
-                  <h4 class="client-name">Michael Rodriguez</h4>
-                  <p class="client-role">Creative Director, Pixel Perfect</p>
+
+                <!-- Master Project 2 -->
+                <div class="master-project-card" data-aos="fade-up" data-aos-delay="200">
+                    <div class="master-project-wrapper">
+                        <div class="master-project-image">
+                            <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&h=400&fit=crop" alt="Analytics Dashboard">
+                            <div class="master-overlay"></div>
+                        </div>
+                        <div class="master-project-content">
+                            <div class="master-category">Analytics</div>
+                            <h3 class="master-project-title">Intelligent Dashboard</h3>
+                            <p class="master-project-description">Real-time data visualization and analytics platform with advanced reporting capabilities</p>
+                            <div class="master-tech">
+                                <span class="tech-tag">Vue.js</span>
+                                <span class="tech-tag">Python</span>
+                                <span class="tech-tag">PostgreSQL</span>
+                                <span class="tech-tag">D3.js</span>
+                            </div>
+                            <div class="master-links">
+                                <a href="#" class="project-btn primary">
+                                    <i class="fas fa-external-link-alt"></i>
+                                    Live Demo
+                                </a>
+                                <a href="#" class="project-btn secondary">
+                                    <i class="fab fa-github"></i>
+                                    Source Code
+                                </a>
+                            </div>
+                        </div>
+                        <div class="master-glow"></div>
+                    </div>
                 </div>
-                <div class="testimonial-rating">
-                  <i class="fas fa-star"></i>
-                  <i class="fas fa-star"></i>
-                  <i class="fas fa-star"></i>
-                  <i class="fas fa-star"></i>
-                  <i class="fas fa-star"></i>
-                </div>
-              </div>
-              <div class="testimonial-content">
-                <p class="testimonial-text">
-                  "Vedant brought our creative vision to life with stunning animations and seamless user experience. The project was delivered on time and the results speak for themselves. Highly recommended for anyone looking for top-tier web development."
-                </p>
-              </div>
+            </div>
+        </section>
+
+        <!-- Additional Projects Grid -->
+        <section class="additional-projects-section">
+            <div class="section-header" data-aos="fade-up">
+                <h2 class="section-title">More <span class="highlight">Projects</span></h2>
+                <p class="section-subtitle">Exploring diverse technologies and creative solutions</p>
             </div>
 
-            <!-- Testimonial 3 -->
-            <div class="testimonial-card">
-              <div class="testimonial-header">
-                <div class="client-avatar">
-                  <img src="https://i.pravatar.cc/150?img=13" alt="Emily Watson" loading="lazy">
+            <div class="projects-grid">
+                <!-- Project Card 1 -->
+                <div class="project-card" data-aos="fade-up" data-aos-delay="100">
+                    <div class="card-image">
+                        <img src="https://images.unsplash.com/photo-1551650975-87deedd944c3?w=400&h=300&fit=crop" alt="Portfolio">
+                        <div class="card-overlay"></div>
+                    </div>
+                    <div class="card-content">
+                        <div class="card-category">Portfolio</div>
+                        <h3 class="card-title">Creative Portfolio</h3>
+                        <p class="card-description">Modern portfolio with dynamic animations and responsive design</p>
+                        <div class="project-tech">
+                            <span class="tech-tag">Vue.js</span>
+                            <span class="tech-tag">Sass</span>
+                            <span class="tech-tag">GSAP</span>
+                        </div>
+                        <div class="card-links">
+                            <a href="#"><i class="fas fa-eye"></i></a>
+                            <a href="#"><i class="fab fa-github"></i></a>
+                        </div>
+                    </div>
                 </div>
-                <div class="client-info">
-                  <h4 class="client-name">Emily Watson</h4>
-                  <p class="client-role">Marketing Manager, Growth Labs</p>
-                </div>
-                <div class="testimonial-rating">
-                  <i class="fas fa-star"></i>
-                  <i class="fas fa-star"></i>
-                  <i class="fas fa-star"></i>
-                  <i class="fas fa-star"></i>
-                  <i class="fas fa-star"></i>
-                </div>
-              </div>
-              <div class="testimonial-content">
-                <p class="testimonial-text">
-                  "The level of professionalism and technical expertise demonstrated throughout our project was outstanding. Vedant not only delivered a beautiful website but also provided valuable insights that helped improve our overall digital strategy."
-                </p>
-              </div>
-            </div>
-          </div>
 
-          <div class="testimonials-cta">
-            <p class="cta-text">Ready to start your next project?</p>
-            <a href="../contact/index.html" class="cta-button">Get In Touch</a>
-          </div>
-        </div>
-      </section>
+                <!-- Project Card 2 -->
+                <div class="project-card" data-aos="fade-up" data-aos-delay="200">
+                    <div class="card-image">
+                        <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400&h=300&fit=crop" alt="Mobile App">
+                        <div class="card-overlay"></div>
+                    </div>
+                    <div class="card-content">
+                        <div class="card-category">Mobile App</div>
+                        <h3 class="card-title">Fitness Tracker</h3>
+                        <p class="card-description">Health tracking with social features and real-time analytics</p>
+                        <div class="project-tech">
+                            <span class="tech-tag">React Native</span>
+                            <span class="tech-tag">Firebase</span>
+                            <span class="tech-tag">Redux</span>
+                        </div>
+                        <div class="card-links">
+                            <a href="#"><i class="fas fa-eye"></i></a>
+                            <a href="#"><i class="fab fa-github"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project Card 3 -->
+                <div class="project-card" data-aos="fade-up" data-aos-delay="300">
+                    <div class="card-image">
+                        <img src="https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=400&h=300&fit=crop" alt="SaaS Platform">
+                        <div class="card-overlay"></div>
+                    </div>
+                    <div class="card-content">
+                        <div class="card-category">SaaS</div>
+                        <h3 class="card-title">Task Manager Pro</h3>
+                        <p class="card-description">Collaborative project management tool with team features</p>
+                        <div class="project-tech">
+                            <span class="tech-tag">Angular</span>
+                            <span class="tech-tag">NestJS</span>
+                            <span class="tech-tag">PostgreSQL</span>
+                        </div>
+                        <div class="card-links">
+                            <a href="#"><i class="fas fa-eye"></i></a>
+                            <a href="#"><i class="fab fa-github"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project Card 4 -->
+                <div class="project-card" data-aos="fade-up" data-aos-delay="400">
+                    <div class="card-image">
+                        <img src="https://images.unsplash.com/photo-1559028012-c72e00bde0c8?w=400&h=300&fit=crop" alt="Blog Platform">
+                        <div class="card-overlay"></div>
+                    </div>
+                    <div class="card-content">
+                        <div class="card-category">CMS</div>
+                        <h3 class="card-title">Blog Engine</h3>
+                        <p class="card-description">Modern blogging platform with SEO optimization</p>
+                        <div class="project-tech">
+                            <span class="tech-tag">Next.js</span>
+                            <span class="tech-tag">Prisma</span>
+                            <span class="tech-tag">Tailwind</span>
+                        </div>
+                        <div class="card-links">
+                            <a href="#"><i class="fas fa-eye"></i></a>
+                            <a href="#"><i class="fab fa-github"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project Card 5 -->
+                <div class="project-card" data-aos="fade-up" data-aos-delay="500">
+                    <div class="card-image">
+                        <img src="https://images.unsplash.com/photo-1551434678-e076c223a692?w=400&h=300&fit=crop" alt="Game">
+                        <div class="card-overlay"></div>
+                    </div>
+                    <div class="card-content">
+                        <div class="card-category">Game Dev</div>
+                        <h3 class="card-title">Space Adventure</h3>
+                        <p class="card-description">Browser-based space game with multiplayer support</p>
+                        <div class="project-tech">
+                            <span class="tech-tag">Three.js</span>
+                            <span class="tech-tag">WebSocket</span>
+                            <span class="tech-tag">Canvas API</span>
+                        </div>
+                        <div class="card-links">
+                            <a href="#"><i class="fas fa-eye"></i></a>
+                            <a href="#"><i class="fab fa-github"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project Card 6 -->
+                <div class="project-card" data-aos="fade-up" data-aos-delay="600">
+                    <div class="card-image">
+                        <img src="https://images.unsplash.com/photo-1611224923853-80b023f02d71?w=400&h=300&fit=crop" alt="API Service">
+                        <div class="card-overlay"></div>
+                    </div>
+                    <div class="card-content">
+                        <div class="card-category">API</div>
+                        <h3 class="card-title">Weather API</h3>
+                        <p class="card-description">Real-time weather data service with forecasting</p>
+                        <div class="project-tech">
+                            <span class="tech-tag">Express</span>
+                            <span class="tech-tag">Redis</span>
+                            <span class="tech-tag">Docker</span>
+                        </div>
+                        <div class="card-links">
+                            <a href="#"><i class="fas fa-eye"></i></a>
+                            <a href="#"><i class="fab fa-github"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Call to Action -->
+        <section class="cta-section" data-aos="fade-up">
+            <div class="cta-content">
+                <h2 class="cta-title">Ready to Start Your Project?</h2>
+                <p class="cta-description">Let's collaborate and bring your ideas to life with cutting-edge technology</p>
+                <div class="cta-buttons">
+                    <a href="../contact/index.html" class="cta-btn primary">Get In Touch</a>
+                    <a href="../service/index.html" class="cta-btn secondary">View Services</a>
+                </div>
+            </div>
+            <div class="cta-animation">
+                <div class="orbit-container">
+                    <div class="orbit-center">
+                        <i class="fas fa-rocket"></i>
+                    </div>
+                    <div class="orbit-item orbit-1">
+                        <i class="fas fa-code"></i>
+                    </div>
+                    <div class="orbit-item orbit-2">
+                        <i class="fas fa-palette"></i>
+                    </div>
+                    <div class="orbit-item orbit-3">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                </div>
+            </div>
+        </section>
     </main>
 
-    <div id="particles-js"></div>
+    <!-- Advanced Footer -->
+    <footer class="advanced-footer">
+        <div class="footer-bg-animation">
+            <div class="wave wave-1"></div>
+            <div class="wave wave-2"></div>
+            <div class="wave wave-3"></div>
+        </div>
+        
+        <div class="footer-content">
+            <div class="footer-top">
+                <div class="footer-grid">
+                    <div class="footer-column about" data-aos="fade-up" data-aos-delay="100">
+                        <div class="footer-logo">
+                            <img src="../fevison.png" alt="Vedant Logo">
+                            <h3>Vedant</h3>
+                        </div>
+                        <p class="footer-description">
+                            Passionate web developer crafting digital experiences with creativity and innovation. 
+                            Transforming ideas into powerful, user-friendly solutions.
+                        </p>
+                        <div class="footer-social">
+                            <a href="https://instagram.com/vedant_wagh_79" target="_blank" class="social-link">
+                                <i class="fab fa-instagram"></i>
+                            </a>
+                            <a href="https://github.com/VedantWagh123" target="_blank" class="social-link">
+                                <i class="fab fa-github"></i>
+                            </a>
+                            <a href="https://linkedin.com/in/yourusername" target="_blank" class="social-link">
+                                <i class="fab fa-linkedin"></i>
+                            </a>
+                            <a href="https://twitter.com/yourusername" target="_blank" class="social-link">
+                                <i class="fab fa-twitter"></i>
+                            </a>
+                        </div>
+                    </div>
 
-    <script src="../script.js"></script>
-    <script src="./script.js"></script>
+                    <div class="footer-column links" data-aos="fade-up" data-aos-delay="200">
+                        <h4 class="footer-title">Quick Links</h4>
+                        <ul class="footer-links">
+                            <li><a href="../index.html">Home</a></li>
+                            <li><a href="../about/index.html">About Me</a></li>
+                            <li><a href="../service/index.html">Services</a></li>
+                            <li><a href="index.html">Projects</a></li>
+                            <li><a href="../testimonial/index.html">Testimonials</a></li>
+                            <li><a href="../contact/index.html">Contact</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="footer-column services" data-aos="fade-up" data-aos-delay="300">
+                        <h4 class="footer-title">Services</h4>
+                        <ul class="footer-links">
+                            <li><a href="../service/index.html">Web Development</a></li>
+                            <li><a href="../service/index.html">UI/UX Design</a></li>
+                            <li><a href="../service/index.html">Mobile Apps</a></li>
+                            <li><a href="../service/index.html">E-Commerce</a></li>
+                            <li><a href="../service/index.html">API Development</a></li>
+                            <li><a href="../service/index.html">Consulting</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="footer-column contact" data-aos="fade-up" data-aos-delay="400">
+                        <h4 class="footer-title">Get In Touch</h4>
+                        <div class="contact-info">
+                            <div class="contact-item">
+                                <i class="fas fa-envelope"></i>
+                                <span>vedant@example.com</span>
+                            </div>
+                            <div class="contact-item">
+                                <i class="fas fa-phone"></i>
+                                <span>+91 87664 55628</span>
+                            </div>
+                            <div class="contact-item">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>Mumbai, India</span>
+                            </div>
+                        </div>
+                        <div class="newsletter">
+                            <p>Subscribe to my newsletter for updates</p>
+                            <form class="newsletter-form">
+                                <input type="email" placeholder="Your email" required>
+                                <button type="submit">
+                                    <i class="fas fa-paper-plane"></i>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <div class="footer-bottom-content">
+                    <p>&copy; 2024 Vedant. All rights reserved. Made with <i class="fas fa-heart"></i> and lots of <i class="fas fa-coffee"></i></p>
+                    <div class="footer-bottom-links">
+                        <a href="#">Privacy Policy</a>
+                        <a href="#">Terms of Service</a>
+                        <a href="#">Cookie Policy</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="script.js"></script>
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
-      AOS.init({
-        offset: 120,
-        duration: 1000,
-        easing: "ease-in-out",
-        once: true,
-        mirror: false,
-      });
+        AOS.init({
+            offset: 120,
+            duration: 1000,
+            easing: 'ease-in-out',
+            once: true,
+            mirror: false,
+        });
     </script>
-    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
-    <script>
-      particlesJS("particles-js", {
-        particles: {
-          number: {
-            value: 90,
-            density: {
-              enable: true,
-              value_area: 800,
-            },
-          },
-          color: {
-            value: "#7f00ff",
-          },
-          shape: {
-            type: "circle",
-            stroke: {
-              width: 0,
-              color: "#000000",
-            },
-          },
-          opacity: {
-            value: 0.3,
-            random: true,
-          },
-          size: {
-            value: 4,
-            random: true,
-          },
-          line_linked: {
-            enable: true,
-            distance: 120,
-            color: "#ffffff",
-            opacity: 0.2,
-            width: 1,
-          },
-          move: {
-            enable: true,
-            speed: 2,
-            direction: "none",
-            out_mode: "bounce",
-          },
-        },
-        interactivity: {
-          events: {
-            onhover: {
-              enable: true,
-              mode: "grab",
-            },
-            onclick: {
-              enable: false,
-            },
-            resize: true,
-          },
-          modes: {
-            grab: {
-              distance: 140,
-              line_linked: {
-                opacity: 0.4,
-              },
-            },
-          },
-        },
-        retina_detect: true,
-      });
-    </script>
-  </body>
+</body>
 </html>
